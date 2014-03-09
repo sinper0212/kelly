@@ -13,7 +13,7 @@ import kelly.core.exception.KellyException;
 public class EActionArgumentResolver implements ActionArgumentResolver {
 
 	@Override
-	public boolean supports(ActionArgument actionArgument, HttpServletRequest httpServletRequest) {
+	public boolean supports(ActionArgument actionArgument, Castor castor, HttpServletRequest httpServletRequest) {
 		return false;
 	}
 

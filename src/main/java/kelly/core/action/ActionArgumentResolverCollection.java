@@ -67,9 +67,15 @@ public final class ActionArgumentResolverCollection
 	}
 
 	@Override
-	public void add(Class<? extends ActionArgumentResolver> actionArgumentResolverClass) {
-		if (actionArgumentResolverClass != null) {
-			ActionArgumentResolver resolver = ReflectionUtils.invokeConstructor(actionArgumentResolverClass);
+	public void add(Class<? extends ActionArgumentResolver> resolverClass) {
+		if (resolverClass != null) {
+			ActionArgumentResolver resolver = ReflectionUtils.invokeConstructor(resolverClass);
+			add(resolver);
+		}
+	}
+
+	public void add(ActionArgumentResolver resolver) {
+		if (resolver != null) {
 			actionArgumentResolverList.add(resolver);
 		}
 	}
@@ -85,7 +91,7 @@ public final class ActionArgumentResolverCollection
 			return null;
 		}
 		for (ActionArgumentResolver resolver : actionArgumentResolverList) {
-			if (resolver.supports(actionArgument, request)) {
+			if (resolver.supports(actionArgument, conversionService, request)) {
 				return resolver;
 			}
 		}
@@ -96,4 +102,5 @@ public final class ActionArgumentResolverCollection
 	public void setComponent(ConversionService conversionService) {
 		this.conversionService = Validate.notNull(conversionService);
 	}
+
 }

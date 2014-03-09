@@ -11,11 +11,13 @@ import kelly.core.action.ActionArgumentResolverCollection;
 import kelly.core.annotation.Component;
 import kelly.core.annotation.Controller;
 import kelly.core.argument.BooleanResolver;
+import kelly.core.argument.CastorForwardingResolver;
 import kelly.core.argument.DateResolver;
 import kelly.core.argument.HttpServletRequestResolver;
 import kelly.core.argument.HttpServletResponseResolver;
 import kelly.core.argument.HttpSessionResolver;
 import kelly.core.argument.PrintWriterResolver;
+import kelly.core.argument.PropertyEditorForwardingResolver;
 import kelly.core.argument.ServletContextResolver;
 import kelly.core.argument.ServletOutputStreamResolver;
 import kelly.core.castor.ConversionService;
@@ -129,14 +131,16 @@ public class JavaConfig extends Config {
 
 	@Override
 	protected void registerActionArgumentResolvers(ActionArgumentResolverCollection collection) {
-		collection.add(HttpServletRequestResolver.class);
-		collection.add(HttpServletResponseResolver.class);
-		collection.add(HttpSessionResolver.class);
-		collection.add(ServletContextResolver.class);
-		collection.add(PrintWriterResolver.class);
-		collection.add(ServletOutputStreamResolver.class);
-		collection.add(DateResolver.class);
-		collection.add(BooleanResolver.class);
+		collection.add(new HttpServletRequestResolver());
+		collection.add(new HttpServletResponseResolver());
+		collection.add(new HttpSessionResolver());
+		collection.add(new ServletContextResolver());
+		collection.add(new PrintWriterResolver());
+		collection.add(new ServletOutputStreamResolver());
+		collection.add(new DateResolver());
+		collection.add(new BooleanResolver());
+		collection.add(new PropertyEditorForwardingResolver());
+		collection.add(new CastorForwardingResolver());
 	}
 
 }

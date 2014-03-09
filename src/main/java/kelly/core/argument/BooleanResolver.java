@@ -11,7 +11,7 @@ import kelly.core.exception.KellyException;
 public class BooleanResolver extends AbstractActionArgumentResolver implements ActionArgumentResolver {
 
 	@Override
-	public boolean supports(ActionArgument actionArgument, HttpServletRequest httpServletRequest) {
+	public boolean supports(ActionArgument actionArgument, Castor castor, HttpServletRequest httpServletRequest) {
 		Class<?> type = actionArgument.getParameterType();
 		return type == boolean.class || type == Boolean.class;
 	}

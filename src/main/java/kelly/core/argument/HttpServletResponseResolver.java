@@ -12,7 +12,7 @@ import kelly.util.ClassUtils;
 public class HttpServletResponseResolver extends AbstractActionArgumentResolver {
 
 	@Override
-	public boolean supports(ActionArgument actionArgument, HttpServletRequest httpServletRequest) {
+	public boolean supports(ActionArgument actionArgument, Castor castor, HttpServletRequest httpServletRequest) {
 		Class<?> type = actionArgument.getParameterType();
 		return ClassUtils.isAssignable(type, HttpServletResponse.class) || ClassUtils.isAssignable(type, ServletResponse.class);
 	}

@@ -15,7 +15,7 @@ import kelly.util.ClassUtils;
 public class PrintWriterResolver extends AbstractActionArgumentResolver {
 
 	@Override
-	public boolean supports(ActionArgument actionArgument, HttpServletRequest httpServletRequest) {
+	public boolean supports(ActionArgument actionArgument, Castor castor, HttpServletRequest httpServletRequest) {
 		return ClassUtils.isAssignable(actionArgument.getParameterType(), PrintWriter.class);
 	}
 

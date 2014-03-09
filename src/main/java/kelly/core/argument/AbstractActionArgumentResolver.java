@@ -1,5 +1,6 @@
 package kelly.core.argument;
 
+import java.beans.PropertyEditor;
 import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
@@ -10,6 +11,8 @@ import kelly.core.action.ActionFinder;
 import kelly.core.annotation.DateTimePattern;
 import kelly.core.annotation.PathVariable;
 import kelly.core.annotation.RequestParam;
+import kelly.util.ClassLoaderUtils;
+import kelly.util.ClassUtils;
 
 /**
  * 提供一些通用方法
@@ -45,5 +48,26 @@ public abstract class AbstractActionArgumentResolver implements ActionArgumentRe
 			return actionArgument.getAnnotation(DateTimePattern.class).value();
 		}
 		return null;
+	}
+	
+	protected Class<? extends PropertyEditor> loadPropertyEditor(HttpServletRequest request, ActionArgument actionArgument) {
+		String source = getSource(request, actionArgument);
+		
+		// 没有source,有PropertyEditor也没有意义
+		if (source == null) {
+			return null;
+		}
+		
+		String editorName = actionArgument.getParameterType().getName() + "PropertyEditor";
+		try {
+			Class<?> cls = ClassLoaderUtils.loadClass(editorName);
+			if (ClassUtils.isAssignable(cls, PropertyEditor.class)) {
+				return (Class<? extends PropertyEditor>) cls;
+			} else {
+				return null;
+			}
+		} catch (Exception e) {
+			return null;
+		}
 	}
 }

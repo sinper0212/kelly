@@ -17,7 +17,7 @@ public class DateResolver extends AbstractActionArgumentResolver {
 	private static final DateFormat DEFAULT_DATE_FORMAT = new SimpleDateFormat("yyyy-MM-dd");
 
 	@Override
-	public boolean supports(ActionArgument actionArgument, HttpServletRequest httpServletRequest) {
+	public boolean supports(ActionArgument actionArgument, Castor castor, HttpServletRequest httpServletRequest) {
 		return actionArgument.getParameterType() == Date.class;
 	}
 
