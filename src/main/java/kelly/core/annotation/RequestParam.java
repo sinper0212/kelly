@@ -12,6 +12,6 @@ import java.lang.annotation.Target;
 @Documented
 public @interface RequestParam {
 
-	String value() default "";
+	String value();
 
 }
