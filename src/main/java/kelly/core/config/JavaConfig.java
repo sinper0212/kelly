@@ -16,6 +16,7 @@ import kelly.core.argument.DateResolver;
 import kelly.core.argument.HttpServletRequestResolver;
 import kelly.core.argument.HttpServletResponseResolver;
 import kelly.core.argument.HttpSessionResolver;
+import kelly.core.argument.ModelResolver;
 import kelly.core.argument.PrintWriterResolver;
 import kelly.core.argument.PropertyEditorForwardingResolver;
 import kelly.core.argument.ServletContextResolver;
@@ -131,6 +132,7 @@ public class JavaConfig extends Config {
 
 	@Override
 	protected void registerActionArgumentResolvers(ActionArgumentResolverCollection collection) {
+		collection.add(new ModelResolver());
 		collection.add(new HttpServletRequestResolver());
 		collection.add(new HttpServletResponseResolver());
 		collection.add(new HttpSessionResolver());
