@@ -5,7 +5,6 @@ import java.util.Locale;
 import kelly.core.result.ActionResult;
 import kelly.core.result.ActionResult.Type;
 
-@Deprecated // 没有写完
 public class DownloadViewResolver implements ViewResolver {
 
 	@Override
@@ -16,7 +15,7 @@ public class DownloadViewResolver implements ViewResolver {
 	@Override
 	public View resolve(ActionResult actionResult, Locale locale) {
 		if (actionResult.getType() == Type.DOWNLOAD) {
-			return null;
+			return new DownloadView();
 		}
 		return null;
 	}
