@@ -5,7 +5,6 @@ import java.util.Collection;
 import java.util.IdentityHashMap;
 import java.util.Map;
 
-import kelly.core.annotation.DateTimePattern;
 import kelly.core.annotation.Nullable;
 import kelly.core.annotation.PathVariable;
 import kelly.core.annotation.RequestParam;
@@ -60,18 +59,8 @@ public final class ActionArgument {
 
 	// ---------------------------------------------------------------------------------------
 
-	public boolean isNullable() {		// @Nullable
+	public boolean isNullable() {
 		return isAnnotatedBy(Nullable.class);
-	}
-	
-	public String getHttpRequestParameter() { // @RequestParam
-		RequestParam anno = getAnnotation(RequestParam.class);
-		return anno != null ? anno.value() : null;
-	}
-	
-	public String getDateTimePattern() {			// @DateTimePattern
-		DateTimePattern anno = getAnnotation(DateTimePattern.class);
-		return anno != null ? anno.value() : null;
 	}
 	
 	public boolean isAnnotatedBy(Class<? extends Annotation> annotationClass) {
@@ -109,4 +98,5 @@ public final class ActionArgument {
 			throw new KellyException("Cannot use @RequestParam and @PathVariable at same time");
 		}
 	}
+
 }
