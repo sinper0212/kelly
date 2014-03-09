@@ -8,10 +8,10 @@ import kelly.core.action.ActionArgumentResolver;
 import kelly.core.castor.Castor;
 import kelly.core.exception.KellyException;
 
-public class BooleanResolver implements ActionArgumentResolver {
+public class BooleanResolver extends AbstractActionArgumentResolver implements ActionArgumentResolver {
 
 	@Override
-	public boolean supports(ActionArgument actionArgument) {
+	public boolean supports(ActionArgument actionArgument, HttpServletRequest httpServletRequest) {
 		Class<?> type = actionArgument.getParameterType();
 		return type == boolean.class || type == Boolean.class;
 	}
@@ -19,15 +19,14 @@ public class BooleanResolver implements ActionArgumentResolver {
 	@Override
 	public Object resolve(ActionArgument actionArgument, Castor castor, HttpServletRequest request, HttpServletResponse response) throws KellyException {
 		Class<?> type = actionArgument.getParameterType();
-		String param = actionArgument.getHttpRequestParameter();
+		String source = getSource(request, actionArgument);
 		boolean nullable = actionArgument.isNullable();
-		
-		String source = request.getParameter(param);
+
 		if (source == null) {
 			if (nullable) {
 				return type == Boolean.class ? null : Boolean.FALSE;
 			} else {
-				throw new KellyException("Cannnot resolver http request parameter :" + param);
+				throw new KellyException("Cannnot resolver action argument");
 			}
 		}
 		else {

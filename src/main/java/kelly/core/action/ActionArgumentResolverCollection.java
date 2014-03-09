@@ -39,8 +39,8 @@ public final class ActionArgumentResolverCollection
 	
 	// ---------------------------------------------------------------------------------
 	
-	public boolean supports(ActionArgument actionArgument) {
-		return findActionArgumentResolver(actionArgument) != null;
+	public boolean supports(ActionArgument actionArgument, HttpServletRequest request) {
+		return findActionArgumentResolver(actionArgument, request) != null;
 	}
 	
 	public Object[] resolve(ActionArgument[] actionArguments, HttpServletRequest request, HttpServletResponse response) throws KellyException {
@@ -50,7 +50,7 @@ public final class ActionArgumentResolverCollection
 		
 		List<Object> params = new ArrayList<Object>();
 		for (ActionArgument actionArgument : actionArguments) {
-			ActionArgumentResolver resolver = findActionArgumentResolver(actionArgument);
+			ActionArgumentResolver resolver = findActionArgumentResolver(actionArgument, request);
 			if (resolver == null) {
 				if (actionArgument.isNullable()) {
 					params.add(null);
@@ -80,12 +80,12 @@ public final class ActionArgumentResolverCollection
 	
 	// ---------------------------------------------------------------------------------
 
-	private ActionArgumentResolver findActionArgumentResolver(ActionArgument actionArgument) {
+	private ActionArgumentResolver findActionArgumentResolver(ActionArgument actionArgument, HttpServletRequest request) {
 		if (actionArgument == null) {
 			return null;
 		}
 		for (ActionArgumentResolver resolver : actionArgumentResolverList) {
-			if (resolver.supports(actionArgument)) {
+			if (resolver.supports(actionArgument, request)) {
 				return resolver;
 			}
 		}

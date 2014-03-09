@@ -14,7 +14,7 @@ import kelly.core.exception.KellyException;
  */
 public interface ActionArgumentResolver {
 
-	public boolean supports(ActionArgument actionArgument);
+	public boolean supports(ActionArgument actionArgument, HttpServletRequest request);
 
 	public Object resolve(ActionArgument actionArgument, Castor castor, HttpServletRequest request, HttpServletResponse response) throws KellyException;
 

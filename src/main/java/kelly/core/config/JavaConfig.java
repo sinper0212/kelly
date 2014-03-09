@@ -27,7 +27,7 @@ import kelly.core.interceptor.InterceptorCollection;
 import kelly.util.ClassUtils;
 import kelly.util.scan.ClassLookupUtils;
 
-@SuppressWarnings({ "unchecked", "deprecation" })
+@SuppressWarnings({ "unchecked" })
 public class JavaConfig extends Config {
 	
 	protected static final Class<? extends Annotation>[] KELLY_SCAN_ANNOTATIONS = 

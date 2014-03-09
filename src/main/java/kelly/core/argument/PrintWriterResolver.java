@@ -7,18 +7,15 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import kelly.core.action.ActionArgument;
-import kelly.core.action.ActionArgumentResolver;
 import kelly.core.castor.Castor;
 import kelly.core.exception.KellyException;
 import kelly.util.ClassUtils;
 
 
-@Deprecated
-// 直接注入Response更方便
-public class PrintWriterResolver implements ActionArgumentResolver {
+public class PrintWriterResolver extends AbstractActionArgumentResolver {
 
 	@Override
-	public boolean supports(ActionArgument actionArgument) {
+	public boolean supports(ActionArgument actionArgument, HttpServletRequest httpServletRequest) {
 		return ClassUtils.isAssignable(actionArgument.getParameterType(), PrintWriter.class);
 	}
 
