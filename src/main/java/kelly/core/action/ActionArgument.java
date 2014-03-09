@@ -1,25 +1,31 @@
 package kelly.core.action;
 
 import java.lang.annotation.Annotation;
+import java.util.Collection;
+import java.util.IdentityHashMap;
+import java.util.Map;
 
 import kelly.core.annotation.DateTimePattern;
 import kelly.core.annotation.Nullable;
+import kelly.core.annotation.PathVariable;
 import kelly.core.annotation.RequestParam;
+import kelly.core.exception.KellyException;
 import kelly.util.Validate;
 
 /**
  * ActionArgument用来描述Action的参数
  * 
  * @author 应卓(yingzhor@gmail.com)
+ * @since 1.0.0
  *
  */
 public final class ActionArgument {
 
 	private final int index;
 	private final Class<?> type;
-	private final Annotation[] annotations;
-	private final Action action;				// just for log
-	
+	private final Map<Class<? extends Annotation>, Annotation> annotationCache = new IdentityHashMap<Class<? extends Annotation>, Annotation>();
+	private final Action action;
+
 	public ActionArgument(int index, Class<?> type, Annotation[] annotations, Action action) {
 		Validate.isTrue(index >= 0);
 		Validate.notNull(type);
@@ -27,8 +33,12 @@ public final class ActionArgument {
 		Validate.notNull(action);
 		this.index = index;
 		this.type = type;
-		this.annotations = annotations;
 		this.action = action;
+
+		for (Annotation annotation : annotations) {
+			annotationCache.put(annotation.annotationType(), annotation);
+		}		
+		annotationConflictedCheck();
 	}
 
 	public int getParameterIndex() {
@@ -40,40 +50,39 @@ public final class ActionArgument {
 	}
 
 	public Annotation[] getParameterAnnotations() {
-		return annotations;
+		Collection<Annotation> collection = annotationCache.values();
+		return collection.toArray(new Annotation[collection.size()]);
 	}
 	
+	public Action getAction() {
+		return action;
+	}
+
 	// ---------------------------------------------------------------------------------------
 
-	public final boolean isNullable() {		// @Nullable
+	public boolean isNullable() {		// @Nullable
 		return isAnnotatedBy(Nullable.class);
 	}
 	
-	public final String getHttpRequestParameter() { // @RequestParam
+	public String getHttpRequestParameter() { // @RequestParam
 		RequestParam anno = getAnnotation(RequestParam.class);
 		return anno != null ? anno.value() : null;
 	}
 	
-	public final String getDateTimePattern() {			// @DateTimePattern
+	public String getDateTimePattern() {			// @DateTimePattern
 		DateTimePattern anno = getAnnotation(DateTimePattern.class);
 		return anno != null ? anno.value() : null;
 	}
 	
-	@SuppressWarnings("unchecked")
-	public <T extends Annotation> T getAnnotation(Class<T> annotationClass) {
-		if (annotations.length == 0 || annotationClass == null) return null;
-		for (Annotation annotation : getParameterAnnotations()) {
-			if (annotation.annotationType() == annotationClass) {
-				return (T) annotation;
-			}
-		}
-		return null;
-	}
-
 	public boolean isAnnotatedBy(Class<? extends Annotation> annotationClass) {
 		return getAnnotation(annotationClass) != null;
 	}
 	
+	@SuppressWarnings("unchecked")
+	public <T extends Annotation> T getAnnotation(Class<T> annotationClass) {
+		return (T) annotationCache.get(annotationClass);
+	}
+
 	@Override
 	public String toString() {
 		StringBuilder sb = new StringBuilder();
@@ -92,5 +101,12 @@ public final class ActionArgument {
 		sb.append(getParameterAnnotations());
 		return sb.toString();
 	}
+	
+	// ---------------------------------------------------------------------------------------
 
+	private void annotationConflictedCheck() {
+		if (isAnnotatedBy(RequestParam.class) && isAnnotatedBy(PathVariable.class)) {
+			throw new KellyException("Cannot use @RequestParam and @PathVariable at same time");
+		}
+	}
 }
