@@ -2,18 +2,24 @@ package kelly.core;
 
 import java.io.Serializable;
 
+import kelly.core.argument.ModelHolder;
+
 public final class ModelAndView implements Serializable {
 
-	private static final long serialVersionUID = 1092588180796752524L;
-
-	private final Model model = new Model();
+	private final Model model;
 	private String viewName;
 	
 	public ModelAndView() {
-		super();
+		Model cached = ModelHolder.getInstance().getModel();
+		if (cached == null) {
+			model = new Model();
+		} else {
+			model = cached;
+		}
 	}
 	
 	public ModelAndView(String viewName) {
+		this();
 		this.viewName = viewName;
 	}
 

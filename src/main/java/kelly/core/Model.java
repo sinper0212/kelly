@@ -23,6 +23,10 @@ public class Model implements Serializable {
 		super();
 	}
 	
+	public boolean isEmpty() {
+		return map.isEmpty();
+	}
+	
 	public Model put(String name, Object value) {
 		map.put(name, value);
 		return this;
