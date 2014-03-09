@@ -16,6 +16,7 @@ import kelly.core.result.InputStreamActionResult;
 import kelly.core.result.ModelActionResult;
 import kelly.core.result.ModelAndViewActionResult;
 import kelly.core.result.NullActionResult;
+import kelly.core.result.ObjectActionResult;
 import kelly.util.ReflectionUtils;
 
 
@@ -61,7 +62,7 @@ public final class ActionExecutor {
 			return new ModelActionResult((Model) result, invokableAction, request, response);
 		}
 		
-		return null;
+		return new ObjectActionResult(result, invokableAction, request, response);
 	}
 
 }
