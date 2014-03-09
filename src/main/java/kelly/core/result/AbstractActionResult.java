@@ -5,7 +5,6 @@ import java.io.InputStream;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import kelly.core.ActionResult;
 import kelly.core.Model;
 import kelly.core.action.Action;
 import kelly.core.argument.ModelHolder;

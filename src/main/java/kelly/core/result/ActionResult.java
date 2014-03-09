@@ -1,7 +1,8 @@
-package kelly.core;
+package kelly.core.result;
 
 import java.io.InputStream;
 
+import kelly.core.Model;
 import kelly.core.action.Action;
 
 /**

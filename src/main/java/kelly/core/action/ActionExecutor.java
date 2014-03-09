@@ -7,9 +7,9 @@ import java.lang.reflect.Method;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import kelly.core.ActionResult;
 import kelly.core.Model;
 import kelly.core.ModelAndView;
+import kelly.core.result.ActionResult;
 import kelly.core.result.ByteArrayActionResult;
 import kelly.core.result.FileActionResult;
 import kelly.core.result.InputStreamActionResult;
