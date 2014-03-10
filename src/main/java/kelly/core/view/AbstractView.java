@@ -7,6 +7,9 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import kelly.core.Model;
+import kelly.core.action.Action;
+import kelly.core.annotation.ContentType;
+import kelly.core.dispatcher.DispatcherFilter;
 import kelly.core.result.ActionResult;
 import kelly.util.Validate;
 
@@ -14,14 +17,20 @@ public abstract class AbstractView implements View {
 
 	@Override
 	public final void render(ActionResult actionResult, HttpServletRequest request, HttpServletResponse response, Locale locale) throws Throwable {
-		setContentType(response);
+		setContentTypeIfNecessary(actionResult.getAction(), response);
 		doRender(actionResult, request, response, locale);
 	}
 	
 	// ----------------------------------------------------------------------------------------------------------------
 	
-	private void setContentType(HttpServletResponse response) {
-		if (getContentType() != null) {
+	/**
+	 * @see DispatcherFilter#setContentTypeIfNecessary
+	 */
+	private void setContentTypeIfNecessary(Action action, HttpServletResponse response) {
+		// 如果方法上有@ContentType的话，视图不再设置ContentType
+		// 由DispatcherFilter设置
+		ContentType contentType = action.getMethod().getAnnotation(ContentType.class);
+		if (getContentType() != null && contentType == null) {
 			response.setContentType(getContentType());
 		}
 	}

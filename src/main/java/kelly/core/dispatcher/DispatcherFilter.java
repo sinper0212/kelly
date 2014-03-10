@@ -10,6 +10,7 @@ import javax.servlet.http.HttpServletResponse;
 
 import kelly.core.action.Action;
 import kelly.core.action.InvokableAction;
+import kelly.core.annotation.ContentType;
 import kelly.core.annotation.Header;
 import kelly.core.annotation.Headers;
 import kelly.core.config.JavaBaseConfig;
@@ -20,6 +21,7 @@ import kelly.core.view.ViewResolver;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
 
 
 /**
@@ -58,8 +60,9 @@ public class DispatcherFilter extends AbstractDispatchFilter {
 			return;
 		}
 		
+		setContentTypeIfNecessary(action, response);
 		setHeadersIfNecessary(action, response);
-		
+
 		Object[] args = config.getActionArgumentResolverCollection()
 				.resolve(action.getActionArguments(), request, response);
 		
@@ -100,6 +103,13 @@ public class DispatcherFilter extends AbstractDispatchFilter {
 
 	private boolean isStaticUri(HttpServletRequest request) {
 		return config.getStaticResourcePredicate().evaluate(request.getRequestURI());
+	}
+	
+	private void setContentTypeIfNecessary(Action action, HttpServletResponse response) {
+		ContentType contentType = action.getMethod().getAnnotation(ContentType.class);
+		if (contentType != null) {
+			response.setContentType(contentType.value());
+		}
 	}
 	
 	private void setHeadersIfNecessary(Action action, HttpServletResponse response) {
