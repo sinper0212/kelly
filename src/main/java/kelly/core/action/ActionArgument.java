@@ -37,7 +37,7 @@ public final class ActionArgument {
 		for (Annotation annotation : annotations) {
 			annotationCache.put(annotation.annotationType(), annotation);
 		}		
-		annotationConflictedCheck();
+//		annotationConflictedCheck();
 	}
 
 	public int getParameterIndex() {
@@ -93,6 +93,9 @@ public final class ActionArgument {
 	
 	// ---------------------------------------------------------------------------------------
 
+	// 不再判断同一个Action参数上的标注是否有冲突
+	@Deprecated
+	@SuppressWarnings("unused")
 	private void annotationConflictedCheck() {
 		if (isAnnotatedBy(RequestParam.class) && isAnnotatedBy(PathVariable.class)) {
 			throw new KellyException("Cannot use @RequestParam and @PathVariable at same time");
