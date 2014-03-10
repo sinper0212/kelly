@@ -56,6 +56,15 @@ public final class ActionExecutor {
 			return new ResourceActionResult(new ByteArrayResource((byte[]) result), invokableAction, request, response);
 		}
 		
+		if (result.getClass() == Byte[].class) {
+			Byte[] src = (Byte[]) result;
+			byte buf[] = new byte[src.length];
+			for (int i = 0; i < src.length; i++) {
+				buf[i] = src[i].byteValue();
+			}
+			return new ResourceActionResult(new ByteArrayResource(buf), invokableAction, request, response);
+		}
+		
 		if (result instanceof InputStream) {
 			return new InputStreamActionResult((InputStream) result, invokableAction, request, response);
 		}
