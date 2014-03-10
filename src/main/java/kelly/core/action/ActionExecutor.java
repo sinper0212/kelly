@@ -9,14 +9,16 @@ import javax.servlet.http.HttpServletResponse;
 
 import kelly.core.Model;
 import kelly.core.ModelAndView;
+import kelly.core.resource.ByteArrayResource;
+import kelly.core.resource.FileSystemResource;
+import kelly.core.resource.Resource;
 import kelly.core.result.ActionResult;
-import kelly.core.result.ByteArrayActionResult;
-import kelly.core.result.FileActionResult;
 import kelly.core.result.InputStreamActionResult;
 import kelly.core.result.ModelActionResult;
 import kelly.core.result.ModelAndViewActionResult;
 import kelly.core.result.NullActionResult;
 import kelly.core.result.ObjectActionResult;
+import kelly.core.result.ResourceActionResult;
 import kelly.util.ReflectionUtils;
 
 
@@ -42,16 +44,20 @@ public final class ActionExecutor {
 			return (ActionResult) result;
 		}
 		
-		if (result instanceof InputStream) {
-			return new InputStreamActionResult((InputStream) result, invokableAction, request, response);
+		if (result instanceof Resource) {
+			return new ResourceActionResult((Resource) result, invokableAction, request, response);
 		}
 		
 		if (result instanceof File) {
-			return new FileActionResult((File) result, invokableAction, request, response);
+			return new ResourceActionResult(new FileSystemResource((File) result), invokableAction, request, response);
 		}
 		
 		if (result.getClass() == byte[].class) {
-			return new ByteArrayActionResult((byte[]) result, invokableAction, request, response);
+			return new ResourceActionResult(new ByteArrayResource((byte[]) result), invokableAction, request, response);
+		}
+		
+		if (result instanceof InputStream) {
+			return new InputStreamActionResult((InputStream) result, invokableAction, request, response);
 		}
 		
 		if (result instanceof ModelAndView) {

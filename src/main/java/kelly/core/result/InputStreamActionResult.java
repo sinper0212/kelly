@@ -8,7 +8,7 @@ import javax.servlet.http.HttpServletResponse;
 import kelly.core.Model;
 import kelly.core.action.Action;
 
-public class InputStreamActionResult extends AbstractActionResult {
+public final class InputStreamActionResult extends AbstractActionResult {
 
 	public InputStreamActionResult(InputStream is, Action action, HttpServletRequest request, HttpServletResponse response) {
 		super(is, action, request, response);
