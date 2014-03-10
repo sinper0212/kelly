@@ -6,7 +6,12 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
 
-
+/**
+ * 模型类 (对map的简单封装)
+ * 
+ * @author 应卓(yingzhor@gmail.com)
+ *
+ */
 public class Model implements Serializable {
 
 	private static final long serialVersionUID = -7214271609779612656L;
@@ -41,11 +46,11 @@ public class Model implements Serializable {
 	}
 	
 	public Set<String> getNames() {
-		return Collections.unmodifiableSet(map.keySet());
+		return map.keySet();			// immutable set
 	}
 
 	public Map<String, Object> asMap() {
-		return Collections.unmodifiableMap(map);
+		return Collections.unmodifiableMap(map);	// immutable
 	}
 
 }
