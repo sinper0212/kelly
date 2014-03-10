@@ -10,6 +10,8 @@ import javax.servlet.http.HttpServletResponse;
 
 import kelly.core.action.Action;
 import kelly.core.action.InvokableAction;
+import kelly.core.annotation.Header;
+import kelly.core.annotation.Headers;
 import kelly.core.config.JavaBaseConfig;
 import kelly.core.exception.KellyException;
 import kelly.core.result.ActionResult;
@@ -18,6 +20,7 @@ import kelly.core.view.ViewResolver;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
 
 /**
  * Kelly框架核心
@@ -100,7 +103,24 @@ public class DispatcherFilter extends AbstractDispatchFilter {
 	}
 	
 	private void setHeadersIfNecessary(Action action, HttpServletResponse response) {
-		// TODO 查找@Headers/@Header标注
+		Headers headers = action.getMethod().getAnnotation(Headers.class);
+		Header header = action.getMethod().getAnnotation(Header.class);
+		
+		// 用户同时使用了@Headers和@Header
+		if (header != null && headers != null) {
+			logger.warn("@Header and @Header annotation both exists. @Header will be ignored!");
+		}
+		
+		if (headers != null) {
+			for (Header each : headers.value()) {
+				response.setHeader(each.headerName(), each.headerValue());
+			}
+			return; // ignore @Header
+		}
+		
+		if (header != null) {
+			response.setHeader(header.headerName(), header.headerValue());
+		}
 	}
 
 }
