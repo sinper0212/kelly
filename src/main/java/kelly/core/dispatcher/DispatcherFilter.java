@@ -18,6 +18,8 @@ import kelly.core.exception.KellyException;
 import kelly.core.result.ActionResult;
 import kelly.core.view.View;
 import kelly.core.view.ViewResolver;
+import kelly.util.ClassLoaderUtils;
+import kelly.util.ReflectionUtils;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -37,8 +39,14 @@ public class DispatcherFilter extends AbstractDispatchFilter {
 	
 	@Override
 	public void init(FilterConfig filterConfig) throws ServletException {
-		//TODO 支持用户扩展的JavaBaseConfig
-		config = new JavaBasedConfig();
+		String className = filterConfig.getInitParameter("kelly.config");
+		if (className == null) {
+			config = new JavaBasedConfig();
+		}
+		else {
+			Class<?> cls = ClassLoaderUtils.loadClass(className);
+			config = (JavaBasedConfig) ReflectionUtils.invokeConstructor(cls);
+		}
 	}
 
 	@Override
