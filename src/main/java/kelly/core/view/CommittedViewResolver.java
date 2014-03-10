@@ -8,7 +8,7 @@ import kelly.core.result.ActionResult.Type;
 public class CommittedViewResolver extends AbstractViewResolver {
 
 	public CommittedViewResolver() {
-		super.setOrder(0);
+		super.setOrder(Integer.MIN_VALUE);
 	}
 
 	@Override

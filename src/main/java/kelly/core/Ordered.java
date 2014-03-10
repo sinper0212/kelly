@@ -15,16 +15,11 @@ public interface Ordered {
 	 */
 	Comparator<Ordered> DEFAULT_COMPARATOR = new Comparator<Ordered>() {
 		public int compare(Ordered o1, Ordered o2) {
-			return (int)((long)o1.getOrder() - (long)o2.getOrder());
-		}
-	};
-	
-	/**
-	 * 与默认相反的比较器(数值大在前)
-	 */
-	Comparator<Ordered> REVERSE_COMPARATOR = new Comparator<Ordered>() {
-		public int compare(Ordered o1, Ordered o2) {
-			return (int)((long)o2.getOrder() - (long)o1.getOrder());
+			int i1 = o1.getOrder();
+			int i2 = o2.getOrder();
+			if (i1 == i2) return 0;
+			else if (i1 < i2) return -1;
+			else return 1;
 		}
 	};
 	
