@@ -2,7 +2,7 @@ package junit;
 
 import java.io.IOException;
 
-import kelly.core.config.JavaBaseConfig;
+import kelly.core.config.JavaBasedConfig;
 import kelly.core.path.AntStylePathMatcher;
 import kelly.core.path.PathMatcher;
 import kelly.core.resource.Resource;
@@ -17,7 +17,7 @@ public class TestCase {
 	
 	@Test
 	public void test1() {
-		new JavaBaseConfig();
+		new JavaBasedConfig();
 	}
 	
 	@Test

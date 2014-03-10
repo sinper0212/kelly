@@ -43,14 +43,14 @@ import kelly.util.ClassUtils;
 import kelly.util.scan.ClassLookupUtils;
 
 @SuppressWarnings({ "unchecked" })
-public class JavaBaseConfig extends Config {
+public class JavaBasedConfig extends Config {
 	
 	protected static final Class<? extends Annotation>[] KELLY_SCAN_ANNOTATIONS = 
 							new Class[] {Component.class, Controller.class};
 	
 	// -----------------------------------------------------------------------------------------------
 
-	public JavaBaseConfig() {
+	public JavaBasedConfig() {
 		super();
 
 		// 扫描注册用户扩展组件

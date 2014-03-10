@@ -13,7 +13,7 @@ import kelly.core.action.InvokableAction;
 import kelly.core.annotation.ContentType;
 import kelly.core.annotation.Header;
 import kelly.core.annotation.Headers;
-import kelly.core.config.JavaBaseConfig;
+import kelly.core.config.JavaBasedConfig;
 import kelly.core.exception.KellyException;
 import kelly.core.result.ActionResult;
 import kelly.core.view.View;
@@ -33,12 +33,12 @@ import org.slf4j.LoggerFactory;
 public class DispatcherFilter extends AbstractDispatchFilter {
 
 	private static final Logger logger = LoggerFactory.getLogger(DispatcherFilter.class);
-	private JavaBaseConfig config = null;
+	private JavaBasedConfig config = null;
 	
 	@Override
 	public void init(FilterConfig filterConfig) throws ServletException {
 		//TODO 支持用户扩展的JavaBaseConfig
-		config = new JavaBaseConfig();
+		config = new JavaBasedConfig();
 	}
 
 	@Override
