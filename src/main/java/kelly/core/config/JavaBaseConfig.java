@@ -8,6 +8,10 @@ import java.util.Set;
 import kelly.core.action.Action;
 import kelly.core.action.ActionArgumentResolver;
 import kelly.core.action.ActionArgumentResolverCollection;
+import kelly.core.action.ActionCollection;
+import kelly.core.action.ActionExecutor;
+import kelly.core.action.ActionFinder;
+import kelly.core.action.InvokableActionFactory;
 import kelly.core.annotation.Component;
 import kelly.core.annotation.Controller;
 import kelly.core.argument.BooleanResolver;
@@ -23,6 +27,7 @@ import kelly.core.argument.ServletContextResolver;
 import kelly.core.argument.ServletOutputStreamResolver;
 import kelly.core.castor.ConversionService;
 import kelly.core.castor.Converter;
+import kelly.core.functor.Predicate;
 import kelly.core.injector.Injector;
 import kelly.core.injector.NOPInjector;
 import kelly.core.interceptor.Interceptor;
@@ -31,14 +36,14 @@ import kelly.util.ClassUtils;
 import kelly.util.scan.ClassLookupUtils;
 
 @SuppressWarnings({ "unchecked" })
-public class JavaConfig extends Config {
+public class JavaBaseConfig extends Config {
 	
 	protected static final Class<? extends Annotation>[] KELLY_SCAN_ANNOTATIONS = 
 							new Class[] {Component.class, Controller.class};
 	
 	// -----------------------------------------------------------------------------------------------
 
-	public JavaConfig() {
+	public JavaBaseConfig() {
 
 		// 注册系统默认组件
 		registerConverters(conversionService);
@@ -108,6 +113,40 @@ public class JavaConfig extends Config {
 			}
 		}
 	}
+	
+	// ------------------------------------------------------------------------------------------
+	
+	public ActionCollection getActionCollection() {
+		return actionCollection;
+	}
+
+	public ActionFinder getActionFinder() {
+		return actionFinder;
+	}
+
+	public InvokableActionFactory getInvokableActionFactory() {
+		return invokableActionFactory;
+	}
+
+	public InterceptorCollection getInterceptorCollection() {
+		return interceptorCollection;
+	}
+
+	public ActionExecutor getActionExecutor() {
+		return actionExecutor;
+	}
+
+	public ConversionService getConversionService() {
+		return conversionService;
+	}
+
+	public ActionArgumentResolverCollection getActionArgumentResolverCollection() {
+		return actionArgumentResolverCollection;
+	}
+
+	public Predicate<String> getStaticResourcePredicate() {
+		return staticResourcePredicate;
+	}
 
 	// 用户覆盖项
 	// ------------------------------------------------------------------------------------------
@@ -145,4 +184,5 @@ public class JavaConfig extends Config {
 		collection.add(new CastorForwardingResolver());
 	}
 
+	
 }
