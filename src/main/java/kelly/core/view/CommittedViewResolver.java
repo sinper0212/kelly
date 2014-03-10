@@ -8,13 +8,13 @@ import kelly.core.result.ActionResult.Type;
 public class CommittedViewResolver extends AbstractViewResolver {
 
 	public CommittedViewResolver() {
-		super.setOrder(Integer.MIN_VALUE);
+		super.setOrder(0);
 	}
 
 	@Override
 	public View resolve(ActionResult actionResult, Locale locale) {
 		if (actionResult.getType() == Type.COMMITTED) {
-			return null;
+			return new CommittedView();
 		}
 		return null;
 	}
