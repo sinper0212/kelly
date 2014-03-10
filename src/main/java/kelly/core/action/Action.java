@@ -102,7 +102,7 @@ public class Action implements Comparable<Action>{
 		return getControllerClass().getAnnotation(Singleton.class) != null;
 	}
 	
-	public final ActionArgument[] getActionArgument() {
+	public final ActionArgument[] getActionArguments() {
 		Class<?>[] parameterTypes = getMethodParameterTypes();
 		if (parameterTypes == null || parameterTypes.length == 0) {
 			return EMPTY_ACTION_ARGUMENT_ARRAY;
