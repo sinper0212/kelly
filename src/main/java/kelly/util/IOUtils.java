@@ -26,6 +26,7 @@ import java.nio.charset.Charset;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
+import java.util.zip.ZipFile;
 
 import kelly.util.io.SmartByteArrayOutputStream;
 import kelly.util.io.StringBuilderWriter;
@@ -70,6 +71,16 @@ public class IOUtils {
 	public static void close(URLConnection conn) {
 		if (conn instanceof HttpURLConnection) {
 			((HttpURLConnection) conn).disconnect();
+		}
+	}
+	
+	public static void closeQuietly(ZipFile zipFile) {
+		try {
+			if (zipFile != null) {
+					zipFile.close();
+			}
+		} catch (IOException ioe) {
+			// ignored
 		}
 	}
 
