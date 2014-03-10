@@ -22,7 +22,7 @@ import kelly.util.ReflectionUtils;
  */
 public final class ActionCollection implements Addable<Action>, InvokableActionFactory, Aware<Injector> {
 
-	private Injector injector = new NOPInjector();
+	private Injector injector = NOPInjector.INSTANCE;
 	private final List<Action> actionList = new ArrayList<Action>();
 	private final Map<Class<?>, Object> singtonControllerCache = new IdentityHashMap<Class<?>, Object>();
 

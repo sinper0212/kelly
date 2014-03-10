@@ -160,7 +160,7 @@ public class JavaBaseConfig extends Config {
 	
 	@Override
 	protected Injector getInjector() {
-		return new NOPInjector();
+		return NOPInjector.INSTANCE;
 	}
 
 	@Override

@@ -9,7 +9,9 @@ package kelly.core.injector;
  */
 public class NOPInjector implements Injector {
 
-	public NOPInjector() {
+	public static final Injector INSTANCE = new NOPInjector();
+	
+	private NOPInjector() {
 	}
 
 	// --------------------------------------------------------------------------

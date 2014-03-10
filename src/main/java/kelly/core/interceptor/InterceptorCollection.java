@@ -20,7 +20,7 @@ import kelly.util.ReflectionUtils;
  */
 public final class InterceptorCollection implements Addable<Class<? extends Interceptor>>, Aware<Injector> {
 
-	private Injector injector = new NOPInjector();
+	private Injector injector = NOPInjector.INSTANCE;
 	private final Map<Class<? extends Interceptor>, Interceptor> cache = new IdentityHashMap<Class<? extends Interceptor>, Interceptor>();
 	
 	// -------------------------------------------------------------------------------------------
