@@ -1,8 +1,12 @@
 package junit;
 
+import java.io.IOException;
+
 import kelly.core.config.JavaConfig;
 import kelly.core.path.AntStylePathMatcher;
 import kelly.core.path.PathMatcher;
+import kelly.core.resource.Resource;
+import kelly.core.resource.SmartResourceLoader;
 
 import org.junit.Test;
 
@@ -14,6 +18,18 @@ public class TestCase {
 	@Test
 	public void test1() {
 		new JavaConfig();
+	}
+	
+	@Test
+	public void test2() throws IOException {
+		SmartResourceLoader loader = new SmartResourceLoader();
+		Resource[] resources = loader.getResources("classpath*:/**/*.txt");
+		
+		if (resources != null) {
+			for (Resource r : resources) {
+				System.out.println(r.getFile().getPath());
+			}
+		}
 	}
 
 }
