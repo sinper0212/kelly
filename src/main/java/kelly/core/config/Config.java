@@ -1,7 +1,10 @@
 package kelly.core.config;
 
+import java.util.SortedSet;
 import java.util.Map.Entry;
+import java.util.TreeSet;
 
+import kelly.core.Ordered;
 import kelly.core.action.Action;
 import kelly.core.action.ActionArgumentResolver;
 import kelly.core.action.ActionArgumentResolverCollection;
@@ -11,9 +14,12 @@ import kelly.core.action.ActionFinder;
 import kelly.core.action.InvokableActionFactory;
 import kelly.core.castor.ConversionService;
 import kelly.core.castor.Converter;
+import kelly.core.functor.Predicate;
 import kelly.core.injector.Injector;
 import kelly.core.interceptor.Interceptor;
 import kelly.core.interceptor.InterceptorCollection;
+import kelly.core.path.DefaultStaticResourcePredicate;
+import kelly.core.view.ViewResolver;
 import kelly.util.StringUtils;
 
 import org.slf4j.Logger;
@@ -28,7 +34,7 @@ import org.slf4j.LoggerFactory;
 abstract class Config {
 
 	protected static final Logger log = LoggerFactory.getLogger(Config.class);
-	
+
 	// ------------------------------------------------------------------------------------------------
 
 	protected final ActionCollection actionCollection = new ActionCollection();
@@ -44,6 +50,10 @@ abstract class Config {
 	protected final ConversionService conversionService = new ConversionService();
 	
 	protected final ActionArgumentResolverCollection actionArgumentResolverCollection = new ActionArgumentResolverCollection();
+	
+	protected final Predicate<String> staticResourcePredicate = new DefaultStaticResourcePredicate();
+	
+	protected final SortedSet<ViewResolver> viewResolvers = new TreeSet<ViewResolver>(Ordered.DEFAULT_COMPARATOR);
 
 	// ------------------------------------------------------------------------------------------------
 
@@ -52,10 +62,13 @@ abstract class Config {
 		actionCollection.setComponent(getInjector());
 		interceptorCollection.setComponent(getInjector());
 		actionArgumentResolverCollection.setComponent(conversionService);
+		actionExecutor.setComponent(interceptorCollection);
 
 		// 调用注册钩
 		registerConverters(conversionService);
 		registerInterceptors(interceptorCollection);
+		registerActionArgumentResolvers(actionArgumentResolverCollection);
+		registerViewResolvers(viewResolvers);
 	}
 	
 	// ------------------------------------------------------------------------------------------------
@@ -101,6 +114,8 @@ abstract class Config {
 	protected abstract String[] packagesToScan();
 
 	protected abstract void registerConverters(ConversionService conversionService);
+
+	protected abstract void registerViewResolvers(SortedSet<ViewResolver> viewResolverSet);
 	
 	protected abstract void registerInterceptors(InterceptorCollection interceptorCollection);
 	

@@ -1,6 +1,8 @@
 package kelly.core.interceptor;
 
+import java.util.ArrayList;
 import java.util.IdentityHashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
@@ -47,6 +49,24 @@ public final class InterceptorCollection implements Addable<Class<? extends Inte
 	
 	public Set<Class<? extends Interceptor>> getInterceptorTypes() {
 		return cache.keySet();		// immutable set
+	}
+	
+	public Interceptor[] getInterceptors(Class<? extends Interceptor>[] interceptorClasses, boolean createIfNotFound) {
+		List<Interceptor> list = new ArrayList<Interceptor>(interceptorClasses.length);
+		for (Class<? extends Interceptor> cls : interceptorClasses) {
+			Interceptor instance = cache.get(cls);
+			if (instance != null) {
+				list.add(instance);
+			} else {
+				if (createIfNotFound == false) {
+					list.add(NOPInterceptor.INSTANCE);
+				} else {
+					add(cls);
+					list.add(cache.get(cls));
+				}
+			}
+		}
+		return list.toArray(new Interceptor[interceptorClasses.length]);
 	}
 
 	@Override

@@ -3,7 +3,9 @@ package kelly.core.config;
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Method;
 import java.lang.reflect.Modifier;
+import java.util.Collections;
 import java.util.Set;
+import java.util.SortedSet;
 
 import kelly.core.action.Action;
 import kelly.core.action.ActionArgumentResolver;
@@ -32,6 +34,11 @@ import kelly.core.injector.Injector;
 import kelly.core.injector.NOPInjector;
 import kelly.core.interceptor.Interceptor;
 import kelly.core.interceptor.InterceptorCollection;
+import kelly.core.view.CommittedViewResolver;
+import kelly.core.view.DownloadViewResolver;
+import kelly.core.view.JsonViewResolver;
+import kelly.core.view.JspViewResolver;
+import kelly.core.view.ViewResolver;
 import kelly.util.ClassUtils;
 import kelly.util.scan.ClassLookupUtils;
 
@@ -44,11 +51,7 @@ public class JavaBaseConfig extends Config {
 	// -----------------------------------------------------------------------------------------------
 
 	public JavaBaseConfig() {
-
-		// 注册系统默认组件
-		registerConverters(conversionService);
-		registerActionArgumentResolvers(actionArgumentResolverCollection);
-		registerInterceptors(interceptorCollection);
+		super();
 
 		// 扫描注册用户扩展组件
 		Set<Class<?>> classes = ClassLookupUtils.lookupClasses(packagesToScan(), true, KELLY_SCAN_ANNOTATIONS);
@@ -147,6 +150,10 @@ public class JavaBaseConfig extends Config {
 	public Predicate<String> getStaticResourcePredicate() {
 		return staticResourcePredicate;
 	}
+	
+	public SortedSet<ViewResolver> getViewResolverSet() {
+		return Collections.unmodifiableSortedSet(viewResolvers);
+	}
 
 	// 用户覆盖项
 	// ------------------------------------------------------------------------------------------
@@ -163,14 +170,17 @@ public class JavaBaseConfig extends Config {
 
 	@Override
 	protected void registerConverters(ConversionService conversionService) {
+		log.debug("register converters");
 	}
 
 	@Override
 	protected void registerInterceptors(InterceptorCollection interceptorCollection) {
+		log.debug("register interceptors");
 	}
 
 	@Override
 	protected void registerActionArgumentResolvers(ActionArgumentResolverCollection collection) {
+		log.debug("register action-argument resolvers");
 		collection.add(new ModelResolver());
 		collection.add(new HttpServletRequestResolver());
 		collection.add(new HttpServletResponseResolver());
@@ -184,5 +194,13 @@ public class JavaBaseConfig extends Config {
 		collection.add(new CastorForwardingResolver());
 	}
 
+	@Override
+	protected void registerViewResolvers(SortedSet<ViewResolver> viewResolverSet) {
+		log.debug("register view resolvers");
+		viewResolverSet.add(new CommittedViewResolver());
+		viewResolverSet.add(new DownloadViewResolver());
+		viewResolverSet.add(new JsonViewResolver());
+		viewResolverSet.add(new JspViewResolver());
+	}
 	
 }
