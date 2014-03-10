@@ -1,11 +1,14 @@
 package kelly.core.view;
 
 import java.util.Locale;
+import java.util.Map.Entry;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import kelly.core.Model;
 import kelly.core.result.ActionResult;
+import kelly.util.Validate;
 
 public abstract class AbstractView implements View {
 
@@ -20,6 +23,14 @@ public abstract class AbstractView implements View {
 	private void setContentType(HttpServletResponse response) {
 		if (getContentType() != null) {
 			response.setContentType(getContentType());
+		}
+	}
+	
+	protected final void copyModelToRequest(Model model, HttpServletRequest request) {
+		Validate.notNull(model);
+		Validate.notNull(request);
+		for (Entry<String, Object> entry : model.asMap().entrySet()) {
+			request.setAttribute(entry.getKey(), entry.getValue());
 		}
 	}
 	

@@ -5,13 +5,12 @@ import java.util.Locale;
 import kelly.core.annotation.Json;
 import kelly.core.result.ActionResult;
 
-public class JsonViewResolver implements ViewResolver {
+public class JsonViewResolver extends AbstractViewResolver {
 
-	@Override
-	public int getOrder() {
-		return 200;
+	public JsonViewResolver() {
+		super.setOrder(200);
 	}
-
+	
 	@Override
 	public View resolve(ActionResult actionResult, Locale locale) {
 		if (actionResult.getAction().getMethod().getAnnotation(Json.class) != null) {

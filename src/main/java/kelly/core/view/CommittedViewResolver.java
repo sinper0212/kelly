@@ -5,11 +5,10 @@ import java.util.Locale;
 import kelly.core.result.ActionResult;
 import kelly.core.result.ActionResult.Type;
 
-public class CommittedViewResolver implements ViewResolver {
+public class CommittedViewResolver extends AbstractViewResolver {
 
-	@Override
-	public int getOrder() {
-		return Integer.MIN_VALUE;
+	public CommittedViewResolver() {
+		super.setOrder(Integer.MIN_VALUE);
 	}
 
 	@Override

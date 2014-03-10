@@ -5,13 +5,12 @@ import java.util.Locale;
 import kelly.core.result.ActionResult;
 import kelly.core.result.ActionResult.Type;
 
-public class DownloadViewResolver implements ViewResolver {
+public class DownloadViewResolver extends AbstractViewResolver {
 
-	@Override
-	public int getOrder() {
-		return 100;
+	public DownloadViewResolver() {
+		super.setOrder(100);
 	}
-
+	
 	@Override
 	public View resolve(ActionResult actionResult, Locale locale) {
 		if (actionResult.getType() == Type.DOWNLOAD) {
