@@ -3,6 +3,17 @@ package kelly.core.dispatcher;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+/**
+ * 当前请求的Request/Response保存器 (线程安全)
+ * 
+ * @author 应卓(yingzhor@gmail.com)
+ * @since 1.0.0
+ *
+ * @see HttpServletRequest
+ * @see HttpServletResponse
+ * @see ThreadLocal
+ * 
+ */
 public final class WebContextHolder {
 
 	private static final WebContextHolder INSTANCE = new WebContextHolder();
