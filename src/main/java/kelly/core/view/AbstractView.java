@@ -6,6 +6,7 @@ import java.util.Map.Entry;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import jetbrick.template.utils.IoUtils;
 import kelly.core.Model;
 import kelly.core.action.Action;
 import kelly.core.annotation.ContentType;
@@ -19,6 +20,10 @@ public abstract class AbstractView implements View {
 	public final void render(ActionResult actionResult, HttpServletRequest request, HttpServletResponse response, Locale locale) throws Throwable {
 		setContentTypeIfNecessary(actionResult.getAction(), response);
 		doRender(actionResult, request, response, locale);
+		
+		if (actionResult.getInputStream() != null) {
+			IoUtils.closeQuietly(actionResult.getInputStream());
+		}
 	}
 	
 	// ----------------------------------------------------------------------------------------------------------------
