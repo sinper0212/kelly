@@ -150,8 +150,7 @@ public final class ClassLoaderUtils {
 	
 	private static String getCanonicalClassName(String qualifiedClassName) {
 		if (qualifiedClassName == null) {
-			throw new NullPointerException(
-					"qualifiedClassName must not be null.");
+			throw new NullPointerException("qualifiedClassName must not be null.");
 		}
 
 		String name = StringUtils.removeWhitespace(qualifiedClassName);
