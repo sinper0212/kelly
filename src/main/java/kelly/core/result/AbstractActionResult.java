@@ -8,6 +8,7 @@ import javax.servlet.http.HttpServletResponse;
 import kelly.core.Model;
 import kelly.core.action.Action;
 import kelly.core.argument.ModelHolder;
+import kelly.core.model.ImmutableModel;
 import kelly.util.StringUtils;
 import kelly.util.Validate;
 
@@ -43,7 +44,7 @@ public abstract class AbstractActionResult implements ActionResult {
 	@Override
 	public Model getModel() {
 		Model model = ModelHolder.getInstance().getModel();
-		return model != null ? model : Model.IMMUTABLE_EMPTY_MODEL;
+		return model != null ? model : ImmutableModel.INSTANCE;
 	}
 
 	@Override

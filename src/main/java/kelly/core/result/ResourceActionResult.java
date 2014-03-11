@@ -9,6 +9,7 @@ import javax.servlet.http.HttpServletResponse;
 import kelly.core.Model;
 import kelly.core.action.Action;
 import kelly.core.exception.KellyException;
+import kelly.core.model.ImmutableModel;
 import kelly.core.resource.Resource;
 
 public class ResourceActionResult extends AbstractActionResult {
@@ -24,7 +25,7 @@ public class ResourceActionResult extends AbstractActionResult {
 
 	@Override
 	public Model getModel() {
-		return Model.IMMUTABLE_EMPTY_MODEL;
+		return ImmutableModel.INSTANCE;
 	}
 
 	@Override

@@ -7,6 +7,7 @@ import javax.servlet.http.HttpServletResponse;
 
 import kelly.core.Model;
 import kelly.core.action.Action;
+import kelly.core.model.ImmutableModel;
 
 public final class InputStreamActionResult extends AbstractActionResult {
 
@@ -26,7 +27,7 @@ public final class InputStreamActionResult extends AbstractActionResult {
 
 	@Override
 	public Model getModel() {
-		return Model.IMMUTABLE_EMPTY_MODEL;
+		return ImmutableModel.INSTANCE;
 	}
 
 }

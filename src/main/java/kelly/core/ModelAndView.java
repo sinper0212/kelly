@@ -3,13 +3,14 @@ package kelly.core;
 import java.io.Serializable;
 
 import kelly.core.argument.ModelHolder;
+import kelly.core.model.MapModel;
 
 /**
  * 模型与视图
  * 
  * @author 应卓(yingzhor@gmail.com)
  *
- * @see Model
+ * @see MapModel
  * @see ModelHolder
  */
 public final class ModelAndView implements Serializable {
@@ -21,7 +22,7 @@ public final class ModelAndView implements Serializable {
 		Model cachedModel = ModelHolder.getInstance().getModel();
 		
 		if (cachedModel == null) {
-			model = new Model();
+			model = new MapModel();
 		} else {
 			model = cachedModel;
 		}
