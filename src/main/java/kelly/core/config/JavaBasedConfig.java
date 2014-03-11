@@ -34,6 +34,9 @@ import kelly.core.injector.Injector;
 import kelly.core.injector.NOPInjector;
 import kelly.core.interceptor.Interceptor;
 import kelly.core.interceptor.InterceptorCollection;
+import kelly.core.json.FastjsonJsonFactory;
+import kelly.core.json.JsonFactory;
+import kelly.core.json.NOPJsonFactory;
 import kelly.core.view.CommittedViewResolver;
 import kelly.core.view.DownloadViewResolver;
 import kelly.core.view.JetxViewResolver;
@@ -165,6 +168,11 @@ public class JavaBasedConfig extends Config {
 	protected Injector getInjector() {
 		return NOPInjector.INSTANCE;
 	}
+	
+	@Override
+	protected JsonFactory getJsonFactory() {
+		return ClassPathUtils.isJarExists("/**/fastjson-*.jar") ? new FastjsonJsonFactory() : NOPJsonFactory.INSTANCE;
+	}
 
 	@Override
 	protected String[] packagesToScan() {
@@ -203,9 +211,9 @@ public class JavaBasedConfig extends Config {
 		viewResolverSet.add(new CommittedViewResolver());
 		viewResolverSet.add(new RedirectViewResolver());
 		viewResolverSet.add(new DownloadViewResolver());
-		viewResolverSet.add(new JsonViewResolver());
+		viewResolverSet.add(new JsonViewResolver(getJsonFactory()));
 		viewResolverSet.add(new JspViewResolver());
-		
+
 		// 如果ClassPath中有jetbrick-template.xxx.jar
 		// 则加载JetxViewResolver的实例
 		if (ClassPathUtils.isJarExists("/**/jetbrick-template-*.jar")) {

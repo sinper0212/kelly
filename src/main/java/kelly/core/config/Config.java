@@ -1,7 +1,7 @@
 package kelly.core.config;
 
-import java.util.SortedSet;
 import java.util.Map.Entry;
+import java.util.SortedSet;
 import java.util.TreeSet;
 
 import kelly.core.Ordered;
@@ -18,6 +18,7 @@ import kelly.core.functor.Predicate;
 import kelly.core.injector.Injector;
 import kelly.core.interceptor.Interceptor;
 import kelly.core.interceptor.InterceptorCollection;
+import kelly.core.json.JsonFactory;
 import kelly.core.path.DefaultStaticResourcePredicate;
 import kelly.core.view.ViewResolver;
 import kelly.util.StringUtils;
@@ -118,6 +119,8 @@ abstract class Config {
 
 	protected abstract Injector getInjector();
 	
+	protected abstract JsonFactory getJsonFactory();
+
 	protected abstract String[] packagesToScan();
 
 	protected abstract void registerConverters(ConversionService conversionService);

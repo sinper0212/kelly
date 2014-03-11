@@ -5,12 +5,17 @@ import java.util.Locale;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import kelly.core.json.JsonFactory;
 import kelly.core.result.ActionResult;
-
-import com.alibaba.fastjson.JSON;
 
 public class JsonView extends AbstractView {
 
+	private final JsonFactory jsonFactory;
+	
+	public JsonView(JsonFactory jsonFactory) {
+		this.jsonFactory = jsonFactory;
+	}
+	
 	@Override
 	public String getContentType() {
 		return "application/json; charset=utf-8";
@@ -19,7 +24,7 @@ public class JsonView extends AbstractView {
 	@Override
 	public void doRender(ActionResult actionResult, HttpServletRequest request, HttpServletResponse response, Locale locale) throws Throwable {
 		Object target = actionResult.getObject() != null ? actionResult.getObject() : actionResult.getModel().asMap();
-		String json = JSON.toJSONString(target);
+		String json = jsonFactory.create(target);
 		response.getWriter().print(json);
 	}
 
