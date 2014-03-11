@@ -30,7 +30,7 @@ public class ClassPathUtils {
 	// --------------------------------------------------------------------------------
 	
 	/**
-	 * 查看是不是有jar是否存在于classpath
+	 * 查看jar是否存在于classpath
 	 * 
 	 * @param jarPattern 如"/**\/jetbrick-template-*.jar"
 	 * @return true时说明ClassPath中有相应的jar
