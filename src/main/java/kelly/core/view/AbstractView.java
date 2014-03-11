@@ -1,17 +1,18 @@
 package kelly.core.view;
 
+import java.io.Closeable;
 import java.util.Locale;
 import java.util.Map.Entry;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import jetbrick.template.utils.IoUtils;
 import kelly.core.Model;
 import kelly.core.action.Action;
 import kelly.core.annotation.ContentType;
 import kelly.core.dispatcher.DispatcherFilter;
 import kelly.core.result.ActionResult;
+import kelly.util.IOUtils;
 import kelly.util.Validate;
 
 public abstract class AbstractView implements View {
@@ -20,14 +21,21 @@ public abstract class AbstractView implements View {
 	public final void render(ActionResult actionResult, HttpServletRequest request, HttpServletResponse response, Locale locale) throws Throwable {
 		setContentTypeIfNecessary(actionResult.getAction(), response);
 		doRender(actionResult, request, response, locale);
-		
-		if (actionResult.getInputStream() != null) {
-			IoUtils.closeQuietly(actionResult.getInputStream());
-		}
+		close(actionResult);
 	}
 	
 	// ----------------------------------------------------------------------------------------------------------------
 	
+	protected final void copyModelToRequest(Model model, HttpServletRequest request) {
+		Validate.notNull(model);
+		Validate.notNull(request);
+		for (Entry<String, Object> entry : model.asMap().entrySet()) {
+			request.setAttribute(entry.getKey(), entry.getValue());
+		}
+	}
+
+	// ----------------------------------------------------------------------------------------------------------------
+
 	/**
 	 * @see DispatcherFilter#setContentTypeIfNecessary
 	 */
@@ -40,11 +48,17 @@ public abstract class AbstractView implements View {
 		}
 	}
 	
-	protected final void copyModelToRequest(Model model, HttpServletRequest request) {
-		Validate.notNull(model);
-		Validate.notNull(request);
-		for (Entry<String, Object> entry : model.asMap().entrySet()) {
-			request.setAttribute(entry.getKey(), entry.getValue());
+	private final void close(ActionResult actionResult) {
+		IOUtils.closeQuietly((Closeable) actionResult.getInputStream());
+		
+		Model model = actionResult.getModel();
+		if (model != null && !model.isEmpty()) {
+			for (Entry<String, Object> entry : actionResult.getModel().asMap().entrySet()) {
+				if (entry.getValue() instanceof Closeable) {
+					Closeable closeable = (Closeable) entry.getValue();
+					IOUtils.closeQuietly(closeable);
+				}
+			}
 		}
 	}
 	
