@@ -8,15 +8,16 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import kelly.core.Aware;
+import kelly.core.Model;
 import kelly.core.ModelAndView;
 import kelly.core.annotation.Interceptors;
 import kelly.core.interceptor.Interceptor;
 import kelly.core.interceptor.InterceptorCollection;
-import kelly.core.model.MapModel;
 import kelly.core.resource.ByteArrayResource;
 import kelly.core.resource.FileSystemResource;
 import kelly.core.resource.Resource;
 import kelly.core.result.ActionResult;
+import kelly.core.result.CharSequenceActionResult;
 import kelly.core.result.InputStreamActionResult;
 import kelly.core.result.ModelActionResult;
 import kelly.core.result.ModelAndViewActionResult;
@@ -96,12 +97,16 @@ public final class ActionExecutor implements Aware<InterceptorCollection> {
 			return new InputStreamActionResult((InputStream) result, invokableAction, request, response);
 		}
 		
+		if (result instanceof CharSequence) {
+			return new CharSequenceActionResult((CharSequence) result, invokableAction, request, response);
+		}
+		
 		if (result instanceof ModelAndView) {
 			return new ModelAndViewActionResult((ModelAndView) result, invokableAction, request, response);
 		}
 		
-		if (result instanceof MapModel) {
-			return new ModelActionResult((MapModel) result, invokableAction, request, response);
+		if (result instanceof Model) {
+			return new ModelActionResult((Model) result, invokableAction, request, response);
 		}
 		
 		return new ObjectActionResult(result, invokableAction, request, response);
