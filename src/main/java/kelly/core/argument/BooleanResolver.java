@@ -4,14 +4,13 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import kelly.core.action.ActionArgument;
-import kelly.core.action.ActionArgumentResolver;
 import kelly.core.castor.Castor;
 import kelly.core.exception.KellyException;
 
-public class BooleanResolver extends AbstractActionArgumentResolver implements ActionArgumentResolver {
+public class BooleanResolver extends AbstractNeedSourceAciontArgumentResolver {
 
 	@Override
-	public boolean supports(ActionArgument actionArgument, Castor castor, HttpServletRequest httpServletRequest) {
+	protected boolean doSupports(ActionArgument actionArgument, Castor castor, HttpServletRequest httpServletRequest) {
 		Class<?> type = actionArgument.getParameterType();
 		return type == boolean.class || type == Boolean.class;
 	}
@@ -19,7 +18,7 @@ public class BooleanResolver extends AbstractActionArgumentResolver implements A
 	@Override
 	public Object resolve(ActionArgument actionArgument, Castor castor, HttpServletRequest request, HttpServletResponse response) throws KellyException {
 		Class<?> type = actionArgument.getParameterType();
-		String source = getSource(request, actionArgument);
+		String source = getSource(actionArgument, request);
 		boolean nullable = actionArgument.isNullable();
 
 		if (source == null) {

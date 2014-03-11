@@ -7,17 +7,17 @@ import kelly.core.action.ActionArgument;
 import kelly.core.castor.Castor;
 import kelly.core.exception.KellyException;
 
-public class CastorForwardingResolver extends AbstractActionArgumentResolver {
+public class CastorForwardingResolver extends AbstractNeedSourceAciontArgumentResolver {
 
 	@Override
-	public boolean supports(ActionArgument actionArgument, Castor castor, HttpServletRequest request) {
-		String source = getSource(request, actionArgument);
+	protected boolean doSupports(ActionArgument actionArgument, Castor castor, HttpServletRequest request) {
+		String source = getSource(actionArgument, request);
 		return source != null ? castor.canConvert(actionArgument.getParameterType()) : false;
 	}
 
 	@Override
 	public Object resolve(ActionArgument actionArgument, Castor castor, HttpServletRequest request, HttpServletResponse response) throws KellyException {
-		return castor.convert(getSource(request, actionArgument), actionArgument.getParameterType());
+		return castor.convert(getSource(actionArgument, request), actionArgument.getParameterType());
 	}
 
 }

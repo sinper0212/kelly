@@ -12,18 +12,18 @@ import kelly.core.action.ActionArgument;
 import kelly.core.castor.Castor;
 import kelly.core.exception.KellyException;
 
-public class DateResolver extends AbstractActionArgumentResolver {
+public class DateResolver extends AbstractNeedSourceAciontArgumentResolver {
 
 	private static final DateFormat DEFAULT_DATE_FORMAT = new SimpleDateFormat("yyyy-MM-dd");
 
 	@Override
-	public boolean supports(ActionArgument actionArgument, Castor castor, HttpServletRequest httpServletRequest) {
+	protected boolean doSupports(ActionArgument actionArgument, Castor castor, HttpServletRequest httpServletRequest) {
 		return actionArgument.getParameterType() == Date.class;
 	}
 
 	@Override
 	public Object resolve(ActionArgument actionArgument, Castor castor, HttpServletRequest request, HttpServletResponse response) throws KellyException {
-		String source = getSource(request, actionArgument);
+		String source = getSource(actionArgument, request);
 		if (source == null) {
 			return actionArgument.isNullable() ? null : new Date();
 		}
