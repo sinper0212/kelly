@@ -6,6 +6,7 @@ import javax.servlet.http.HttpServletResponse;
 import kelly.core.action.ActionArgument;
 import kelly.core.castor.Castor;
 import kelly.core.exception.KellyException;
+import kelly.util.BooleanUtils;
 
 public class BooleanResolver extends AbstractNeedSourceAciontArgumentResolver {
 
@@ -29,7 +30,7 @@ public class BooleanResolver extends AbstractNeedSourceAciontArgumentResolver {
 			}
 		}
 		else {
-			return Boolean.parseBoolean(source);
+			return BooleanUtils.toBoolean(source);
 		}
 	}
 
