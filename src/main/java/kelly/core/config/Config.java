@@ -105,6 +105,13 @@ abstract class Config {
 			log.debug("{}", resolver.getClass().getName());
 		}
 
+		// viewResolver
+		log.debug(StringUtils.repeat('-', 120));
+		log.debug("ViewResolver(s) : ");
+		for (ViewResolver resolver : viewResolvers) {
+			log.debug("{}", resolver.getClass().getName());
+		}
+		
 		// end
 		log.debug(StringUtils.repeat('=', 120));
 	}
