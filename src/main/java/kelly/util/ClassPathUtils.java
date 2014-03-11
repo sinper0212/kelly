@@ -2,8 +2,6 @@ package kelly.util;
 
 import java.net.URL;
 import java.net.URLClassLoader;
-import java.util.Collection;
-import java.util.HashSet;
 
 import kelly.core.path.AntStylePathMatcher;
 import kelly.core.path.PathMatcher;
@@ -14,25 +12,33 @@ import kelly.core.path.PathMatcher;
  * @author 陈国强(subchen@gmail.com)
  * @author 应卓(yingzhor@gmail.com)
  *
+ * @since 1.0.0
  */
 public class ClassPathUtils {
 
 	private static final PathMatcher PATH_MATCHER = new AntStylePathMatcher(); 
 	
-	public static final String EXT_CLASS_LOADER_NAME = "sun.misc.Launcher$ExtClassLoader";
-	public static final String APP_CLASS_LOADER_NAME = "sun.misc.Launcher$AppClassLoader";
+	private static final String EXT_CLASS_LOADER_NAME = "sun.misc.Launcher$ExtClassLoader";
+//	private static final String APP_CLASS_LOADER_NAME = "sun.misc.Launcher$AppClassLoader";
 	
+	// --------------------------------------------------------------------------------
+
 	private ClassPathUtils() {
 		super();
 	}
 
-	// ----------------------------------------------------------
+	// --------------------------------------------------------------------------------
 	
+	/**
+	 * 查看是不是有jar是否存在于classpath
+	 * 
+	 * @param jarPattern 如"/**\/jetbrick-template-*.jar"
+	 * @return true时说明ClassPath中有相应的jar
+	 */
 	public static boolean isJarExists(String jarPattern) {
 		if (jarPattern == null || jarPattern.length() == 0) {
 			return false;
 		}
-		Collection<URL> urls = new HashSet<URL>(32);
 		ClassLoader cl = Thread.currentThread().getContextClassLoader();
 		while (cl != null) {
 			if (EXT_CLASS_LOADER_NAME.equals(cl.getClass().getName())) {
@@ -40,25 +46,15 @@ public class ClassPathUtils {
 			}
 			if (cl instanceof URLClassLoader) {
 				for (URL url : ((URLClassLoader) cl).getURLs()) {
-					urls.add(url);
+					String filename = url.getFile();
+					if (PATH_MATCHER.match(jarPattern, filename)) {
+						return true;
+					}
 				}
 			}
 			cl = cl.getParent();
 		}
-		
-		for (URL url : urls) {
-			String filename = url.getFile();
-			System.out.println(filename);
-			if (PATH_MATCHER.match(jarPattern, filename)) {
-				return true;
-			}
-		}
 		return false;
 	}
-	
-	public static void main(String[] args) {
-		System.out.println(isJarExists("/**/jetbrick-template-*.jar"));
-		System.out.println(isJarExists("/**/jetbrick-mvc-*.jar"));
-		System.out.println(isJarExists("/**/jetbrick-orm-*.jar"));
-	}
+
 }
