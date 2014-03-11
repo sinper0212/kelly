@@ -15,7 +15,7 @@ import kelly.core.Model;
  */
 public final class MapModel implements Model {
 
-	private Map<String, Object> map = new HashMap<String, Object>();
+	private final Map<String, Object> map = new HashMap<String, Object>();
 	
 	public MapModel() {
 		super();
