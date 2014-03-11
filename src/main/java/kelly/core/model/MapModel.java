@@ -25,7 +25,7 @@ public final class MapModel implements Model {
 		return map.isEmpty();
 	}
 	
-	public MapModel put(String name, Object value) {
+	public Model put(String name, Object value) {
 		map.put(name, value);
 		return this;
 	}
