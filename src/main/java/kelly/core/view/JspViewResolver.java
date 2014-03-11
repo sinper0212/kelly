@@ -24,6 +24,8 @@ public class JspViewResolver extends AbstractViewResolver implements ViewResolve
 		}
 		return null;
 	}
+	
+	// ----------------------------------------------------------------------------------------------
 
 	public void setPrefix(String prefix) {
 		this.prefix = prefix;

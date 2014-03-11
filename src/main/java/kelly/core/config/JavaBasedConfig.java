@@ -38,6 +38,7 @@ import kelly.core.view.CommittedViewResolver;
 import kelly.core.view.DownloadViewResolver;
 import kelly.core.view.JsonViewResolver;
 import kelly.core.view.JspViewResolver;
+import kelly.core.view.RedirectViewResolver;
 import kelly.core.view.ViewResolver;
 import kelly.util.ClassUtils;
 import kelly.util.scan.ClassLookupUtils;
@@ -198,9 +199,10 @@ public class JavaBasedConfig extends Config {
 	protected void registerViewResolvers(SortedSet<ViewResolver> viewResolverSet) {
 		log.debug("register view resolvers");
 		viewResolverSet.add(new CommittedViewResolver());
+		viewResolverSet.add(new RedirectViewResolver());
 		viewResolverSet.add(new DownloadViewResolver());
 		viewResolverSet.add(new JsonViewResolver());
 		viewResolverSet.add(new JspViewResolver());
 	}
-	
+
 }
