@@ -91,6 +91,8 @@ public class DispatcherFilter extends AbstractDispatchFilter {
 			return;
 		}
 		
+		logger.trace(actionResult.toString());
+		
 		View view = null;
 		for (ViewResolver vr : config.getViewResolverSet()) {
 			view = vr.resolve(actionResult, request.getLocale());

@@ -11,9 +11,6 @@ import javax.servlet.ServletResponse;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
 /**
  * 抽象DispatchFilter
  * 
@@ -22,8 +19,6 @@ import org.slf4j.LoggerFactory;
  */
 public abstract class AbstractDispatchFilter implements Filter {
 
-	private static final Logger logger = LoggerFactory.getLogger(AbstractDispatchFilter.class);
-	
 	@Override
 	public void init(FilterConfig filterConfig) throws ServletException {
 		// NOP
@@ -35,7 +30,6 @@ public abstract class AbstractDispatchFilter implements Filter {
 		HttpServletResponse  response = (HttpServletResponse) res;
 
 		// 初始化WebContextHolder
-		logger.trace("init WebContextHolder's instance");
 		WebContextHolder.getInstance().setRequest(request);
 		WebContextHolder.getInstance().setResponse(response);
 		
