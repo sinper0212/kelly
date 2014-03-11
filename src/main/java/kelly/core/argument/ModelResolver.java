@@ -3,6 +3,7 @@ package kelly.core.argument;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import kelly.core.Model;
 import kelly.core.action.ActionArgument;
 import kelly.core.castor.Castor;
 import kelly.core.exception.KellyException;
@@ -14,7 +15,7 @@ public class ModelResolver extends AbstractActionArgumentResolver {
 	@Override
 	public boolean supports(ActionArgument actionArgument, Castor castor, HttpServletRequest request) {
 		Class<?> type = actionArgument.getParameterType();
-		return ClassUtils.isAssignable(type, MapModel.class);
+		return ClassUtils.isAssignable(type, Model.class);
 	}
 
 	@Override
