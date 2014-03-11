@@ -31,4 +31,6 @@ public interface ActionResult {
 
 	InputStream getInputStream();
 
+	String toString();
+
 }

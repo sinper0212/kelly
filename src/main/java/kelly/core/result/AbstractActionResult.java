@@ -65,6 +65,16 @@ public abstract class AbstractActionResult implements ActionResult {
 			return startsWithIgnoreCase(getView(), "redirect:") ? Type.REDIRECT : Type.FORWARD;
 		}
 	}
+	
+	@Override
+	public String toString() {
+		StringBuilder sb = new StringBuilder();
+		sb.append(getClass().getName());
+		sb.append("[");
+		sb.append("Type: " + getType());
+		sb.append("]");
+		return sb.toString();
+	}
 
 	// -------------------------------------------------------------------------------
 

@@ -16,8 +16,7 @@ public final class ModelAndViewActionResult extends AbstractActionResult {
 	@Override
 	public String getView() {
 		return (getActualResult(ModelAndView.class).getViewName() != null) ? 
-					getActualResult(ModelAndView.class).getViewName() : 
-					super.getView();
+					getActualResult(ModelAndView.class).getViewName() : super.getView();
 	}
 
 	@Override
