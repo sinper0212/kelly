@@ -8,6 +8,6 @@ package kelly.core;
  */
 public enum RequestMethod {
 
-	GET, POST;
+	GET, HEAD, POST, PUT, PATCH, DELETE, OPTIONS, TRACE;
 
 }
