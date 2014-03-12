@@ -25,7 +25,7 @@ public class DateResolver extends AbstractNeedSourceAciontArgumentResolver {
 	public Object resolve(ActionArgument actionArgument, Castor castor, HttpServletRequest request, HttpServletResponse response) throws KellyException {
 		String source = getSource(actionArgument, request);
 		if (source == null) {
-			return actionArgument.isNullable() ? null : new Date();
+			return null;
 		}
 		String pattern = getDateTimePattern(actionArgument);
 		
