@@ -6,9 +6,6 @@ import java.util.IdentityHashMap;
 import java.util.Map;
 
 import kelly.core.annotation.Nullable;
-import kelly.core.annotation.PathVariable;
-import kelly.core.annotation.RequestParam;
-import kelly.core.exception.KellyException;
 import kelly.util.Validate;
 
 /**
@@ -94,12 +91,12 @@ public final class ActionArgument {
 	// ---------------------------------------------------------------------------------------
 
 	// 不再判断同一个Action参数上的标注是否有冲突
-	@Deprecated
-	@SuppressWarnings("unused")
-	private void annotationConflictedCheck() {
-		if (isAnnotatedBy(RequestParam.class) && isAnnotatedBy(PathVariable.class)) {
-			throw new KellyException("Cannot use @RequestParam and @PathVariable at same time");
-		}
-	}
+//	@Deprecated
+//	@SuppressWarnings("unused")
+//	private void annotationConflictedCheck() {
+//		if (isAnnotatedBy(RequestParam.class) && isAnnotatedBy(PathVariable.class)) {
+//			throw new KellyException("Cannot use @RequestParam and @PathVariable at same time");
+//		}
+//	}
 
 }
