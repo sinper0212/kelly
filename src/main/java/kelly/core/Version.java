@@ -7,25 +7,27 @@ package kelly.core;
  * @author 应卓(yingzhor@gmail.com)
  * @since 1.0.0
  */
-public final class Version {
+public final class Version 
+	implements Comparable<Version>
+{
 
 	public static final Version KELLY_1_0_0 = new Version(1, 0, 0);
 	public static final Version CURRENT = KELLY_1_0_0;
 
-	private final int x;
-	private final int y;
-	private final int z;
+	private final String name;
 
 	private Version(int x, int y, int z) {
-		this.x = x;
-		this.y = y;
-		this.z = z;
+		this.name = ("" + x + "." + y + "." + z);
 	}
 	
 	// --------------------------------------------------------------------------------
 	public boolean atLeast(String versionName) {
 		if (versionName == null) {
 			throw new NullPointerException();
+		}
+		versionName = versionName.trim();
+		if (versionName.matches("\\d+\\.\\d+\\.\\d") == false) {
+			throw new VersionPatternException("Name of version must matches \\d+\\.\\d+\\.\\d");
 		}
 		return this.toString().compareTo(versionName) >= 0;
 	}
@@ -34,12 +36,7 @@ public final class Version {
 	
 	@Override
 	public int hashCode() {
-		final int prime = 31;
-		int result = 1;
-		result = prime * result + x;
-		result = prime * result + y;
-		result = prime * result + z;
-		return result;
+		return name.hashCode();
 	}
 
 	@Override
@@ -51,17 +48,22 @@ public final class Version {
 		if (getClass() != obj.getClass())
 			return false;
 		Version other = (Version) obj;
-		if (x != other.x)
-			return false;
-		if (y != other.y)
-			return false;
-		if (z != other.z)
-			return false;
-		return true;
+		return this.name.equals(other.name);
+	}
+
+	@Override
+	public int compareTo(Version other) {
+		return this.name.compareTo(other.name);
 	}
 
 	public String toString() {
-		return String.format("%d.%d.%d", x, y, z);
+		return name;
+	}
+
+	// -----------------------------------------------------------------
+	
+	public static final class VersionPatternException extends RuntimeException {
+		public VersionPatternException(String msg) { super(msg); }
 	}
 
 }
