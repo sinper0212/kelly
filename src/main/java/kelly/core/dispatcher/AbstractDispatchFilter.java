@@ -19,9 +19,9 @@ import javax.servlet.http.HttpServletResponse;
  */
 public abstract class AbstractDispatchFilter implements Filter {
 
+	
 	@Override
 	public void init(FilterConfig filterConfig) throws ServletException {
-		// NOP
 	}
 
 	@Override
@@ -43,7 +43,4 @@ public abstract class AbstractDispatchFilter implements Filter {
 		// NOP
 	}
 	
-	// ------------------------------------------------------------------------------------------
-	
-
 }
