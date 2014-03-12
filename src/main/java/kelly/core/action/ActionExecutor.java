@@ -51,7 +51,7 @@ public final class ActionExecutor implements Aware<InterceptorCollection> {
 		
 		int index = 0;
 		for (int i = 0; i < interceptorArray.length; i ++) {
-			boolean abort = interceptorArray[i].preHandle(request, response);
+			boolean abort = interceptorArray[i].preHandle(request, response) == false;
 			index ++;
 			if (abort) {
 				return (ActionResult) null;
