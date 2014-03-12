@@ -22,6 +22,15 @@ public class ResourceActionResult extends AbstractActionResult {
 	public Type getType() {
 		return Type.DOWNLOAD;
 	}
+	
+	@Override
+	public String getView() {
+		try {
+			return super.getActualResult(Resource.class).getFile().getName();
+		} catch (IOException e) {
+			return super.getView();
+		}
+	}
 
 	@Override
 	public Model getModel() {
