@@ -8,14 +8,14 @@ public interface Model extends Serializable {
 
 	Map<String, Object> asMap();
 	
-	public boolean isEmpty();
+	boolean isEmpty();
 	
-	public Model put(String name, Object value);
+	Model put(String name, Object value);
 	
-	public Object get(String name);
+	Object get(String name);
 	
-	public Object get(String name, Object defaultIfNull);
+	Object get(String name, Object defaultIfNull);
 	
-	public Set<String> getKeys();
+	Set<String> getKeys();
 
 }
