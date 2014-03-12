@@ -112,6 +112,12 @@ abstract class Config {
 		for (ViewResolver resolver : viewResolvers) {
 			log.debug("{}", resolver.getClass().getName());
 		}
+
+		// 
+		log.debug(StringUtils.repeat('-', 120));
+		log.debug("dependency check (spring)            : {}", Dependencies.checkSpring() ? "OK" : "NG");
+		log.debug("dependency check (fastjson)          : {}", Dependencies.checkFastjson() ? "OK" : "NG");
+		log.debug("dependency check (jetbrick-template) : {}", Dependencies.checkJetx() ? "OK" : "NG");
 		
 		// end
 		log.debug(StringUtils.repeat('=', 120));

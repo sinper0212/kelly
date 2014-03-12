@@ -14,6 +14,7 @@ import kelly.core.path.PathMatcher;
  *
  * @since 1.0.0
  */
+@Deprecated
 public class ClassPathUtils {
 
 	private static final PathMatcher PATH_MATCHER = new AntStylePathMatcher(); 

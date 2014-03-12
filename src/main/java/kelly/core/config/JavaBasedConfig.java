@@ -44,7 +44,6 @@ import kelly.core.view.JsonViewResolver;
 import kelly.core.view.JspViewResolver;
 import kelly.core.view.RedirectViewResolver;
 import kelly.core.view.ViewResolver;
-import kelly.util.ClassPathUtils;
 import kelly.util.ClassUtils;
 import kelly.util.scan.ClassLookupUtils;
 
@@ -171,7 +170,7 @@ public class JavaBasedConfig extends Config {
 	
 	@Override
 	protected JsonFactory getJsonFactory() {
-		return ClassPathUtils.isJarExists("/**/fastjson-*.jar") ? new FastjsonJsonFactory() : NOPJsonFactory.INSTANCE;
+		return Dependencies.checkFastjson() ? new FastjsonJsonFactory() : NOPJsonFactory.INSTANCE;
 	}
 
 	@Override
@@ -216,7 +215,7 @@ public class JavaBasedConfig extends Config {
 
 		// 如果ClassPath中有jetbrick-template.xxx.jar
 		// 则加载JetxViewResolver的实例
-		if (ClassPathUtils.isJarExists("/**/jetbrick-template-*.jar")) {
+		if (Dependencies.checkJetx()) {
 			viewResolverSet.add(new JetxViewResolver());
 		}
 	}
