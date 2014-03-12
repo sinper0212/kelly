@@ -56,6 +56,7 @@ public final class Version
 		return this.name.compareTo(other.name);
 	}
 
+	@Override
 	public String toString() {
 		return name;
 	}

@@ -51,7 +51,7 @@ public final class ActionFinder implements Aware<ActionCollection> {
 		for (Action action : all) {
 			String pattern = action.getPattern();
 			if (pathMatcher.match(pattern, uri)) {
-				if (action.getRequestMethods().isEmpty() || action.getRequestMethods().contains(met)) {
+				if (action.getRequestMethods().contains(met)) {
 					found.add(action);
 				}
 			}

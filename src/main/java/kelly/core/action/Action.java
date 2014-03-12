@@ -10,11 +10,17 @@ import java.util.Set;
 
 import kelly.core.RequestMethod;
 import kelly.core.annotation.Controller;
+import kelly.core.annotation.Delete;
 import kelly.core.annotation.Get;
+import kelly.core.annotation.Head;
 import kelly.core.annotation.Interceptors;
 import kelly.core.annotation.Mapping;
+import kelly.core.annotation.Options;
+import kelly.core.annotation.Patch;
 import kelly.core.annotation.Post;
+import kelly.core.annotation.Put;
 import kelly.core.annotation.Singleton;
+import kelly.core.annotation.Trace;
 import kelly.core.interceptor.Interceptor;
 import kelly.util.StringUtils;
 
@@ -50,15 +56,36 @@ public class Action implements Comparable<Action>{
 	}
 
 	private void initRequestMethodSet() {
-		Get get = method.getAnnotation(Get.class);
-		Post post = method.getAnnotation(Post.class);
-		
-		if (get != null) {
+		if (method.getAnnotation(Get.class) != null) {
 			requestMethodSet.add(RequestMethod.GET);
 		}
-		if (post != null) {
+		if (method.getAnnotation(Head.class) != null) {
+			requestMethodSet.add(RequestMethod.HEAD);
+		}
+		if (method.getAnnotation(Post.class) != null) {
 			requestMethodSet.add(RequestMethod.POST);
 		}
+		if (method.getAnnotation(Put.class) != null) {
+			requestMethodSet.add(RequestMethod.PUT);
+		}
+		if (method.getAnnotation(Patch.class) != null) {
+			requestMethodSet.add(RequestMethod.PATCH);
+		}
+		if (method.getAnnotation(Delete.class) != null) {
+			requestMethodSet.add(RequestMethod.DELETE);
+		}
+		if (method.getAnnotation(Options.class) != null) {
+			requestMethodSet.add(RequestMethod.OPTIONS);
+		}
+		if (method.getAnnotation(Trace.class) != null) {
+			requestMethodSet.add(RequestMethod.TRACE);
+		}
+		
+		// 如果以上8个标注都没有，就认为所有method类型都支持
+		if (requestMethodSet.isEmpty()) {
+			requestMethodSet.addAll(Arrays.asList(RequestMethod.values()));
+		}
+
 	}
 	
 	private void initInterceptorClassList() {
