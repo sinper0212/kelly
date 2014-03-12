@@ -18,7 +18,7 @@ public class JspViewResolver extends AbstractViewResolver implements ViewResolve
 	@Override
 	public View resolve(ActionResult actionResult, Locale locale) {
 		String path = prefix + actionResult.getView() + suffix;
-		String realPath = WebContextHolder.getInstance().getRequest().getSession().getServletContext().getRealPath(path); // 不使用Sevlet3.0的API
+		String realPath = WebContextHolder.getInstance().getServletContext().getRealPath(path); // 不使用Sevlet3.0的API
 		if (new File(realPath).exists()) {
 			return new JspView(path);
 		}
