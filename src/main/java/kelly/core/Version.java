@@ -1,38 +1,67 @@
 package kelly.core;
 
+
 /**
  * Kelly框架的版本
  * 
  * @author 应卓(yingzhor@gmail.com)
  * @since 1.0.0
  */
-public enum Version {
+public final class Version {
 
-	CURRENT_VERSION("1.0.0"),
+	public static final Version KELLY_1_0_0 = new Version(1, 0, 0);
+	public static final Version CURRENT = KELLY_1_0_0;
 
-	KELLY_1_0_0("1.0.0");
+	private final int x;
+	private final int y;
+	private final int z;
 
-	private String name;
-
-	Version(final String name) {
-		this.name = name;
+	private Version(int x, int y, int z) {
+		this.x = x;
+		this.y = y;
+		this.z = z;
 	}
-
-	// -----------------------------------------------------------------------
-	public boolean atLeast(String version) {
-		if (version == null) {
-			throw new IllegalArgumentException("Version must not be null.");
+	
+	// --------------------------------------------------------------------------------
+	public boolean atLeast(String versionName) {
+		if (versionName == null) {
+			throw new NullPointerException();
 		}
-		if (version.matches("\\d+\\.\\d+\\.\\d+") == false) {
-			throw new IllegalArgumentException("Version pattern error.");
-		}
-		return this.name.compareTo(version) >= 0;
+		return this.toString().compareTo(versionName) >= 0;
 	}
-
-	// -----------------------------------------------------------------------
+	
+	// --------------------------------------------------------------------------------
+	
 	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = prime * result + x;
+		result = prime * result + y;
+		result = prime * result + z;
+		return result;
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		Version other = (Version) obj;
+		if (x != other.x)
+			return false;
+		if (y != other.y)
+			return false;
+		if (z != other.z)
+			return false;
+		return true;
+	}
+
 	public String toString() {
-		return name;
+		return String.format("%d.%d.%d", x, y, z);
 	}
 
 }
