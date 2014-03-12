@@ -1,5 +1,6 @@
 package kelly.core.dispatcher;
 
+import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
@@ -11,6 +12,7 @@ import javax.servlet.http.HttpServletResponse;
  *
  * @see HttpServletRequest
  * @see HttpServletResponse
+ * @see ServletContext
  * @see ThreadLocal
  * 
  */
@@ -19,6 +21,7 @@ public final class WebContextHolder {
 	private static final WebContextHolder INSTANCE = new WebContextHolder();
 	private static final ThreadLocal<HttpServletRequest>  REQUEST_HOLDER  = new ThreadLocal<HttpServletRequest>();
 	private static final ThreadLocal<HttpServletResponse> RESPONSE_HOLDER = new ThreadLocal<HttpServletResponse>();
+	private static ServletContext SERVLET_CONTEXT = null;
 	
 	public static WebContextHolder getInstance() {
 		return INSTANCE;
@@ -30,12 +33,19 @@ public final class WebContextHolder {
 	
 	// -------------------------------------------------------------------------------------------------
 	
+	// 包内访问
 	void setRequest(HttpServletRequest request) {
 		REQUEST_HOLDER.set(request);
 	}
 	
+	// 包内访问
 	void setResponse(HttpServletResponse response) {
 		RESPONSE_HOLDER.set(response);
+	}
+	
+	// 包内访问
+	void setServletContext(ServletContext servletContext) {
+		SERVLET_CONTEXT = servletContext;
 	}
 	
 	public HttpServletRequest getRequest() {
@@ -44,6 +54,10 @@ public final class WebContextHolder {
 	
 	public HttpServletResponse getResponse() {
 		return RESPONSE_HOLDER.get();
+	}
+	
+	public ServletContext getServletContext() {
+		return SERVLET_CONTEXT;
 	}
 
 }
