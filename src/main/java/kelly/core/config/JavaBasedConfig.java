@@ -27,8 +27,10 @@ import kelly.core.argument.PrintWriterResolver;
 import kelly.core.argument.PropertyEditorForwardingResolver;
 import kelly.core.argument.ServletContextResolver;
 import kelly.core.argument.ServletOutputStreamResolver;
+import kelly.core.argument.SessionIdResolver;
 import kelly.core.castor.ConversionService;
 import kelly.core.castor.Converter;
+import kelly.core.castor.StringConverter;
 import kelly.core.functor.Predicate;
 import kelly.core.injector.Injector;
 import kelly.core.injector.NOPInjector;
@@ -181,6 +183,7 @@ public class JavaBasedConfig extends Config {
 	@Override
 	protected void registerConverters(ConversionService conversionService) {
 		log.debug("register converters");
+		conversionService.add(new StringConverter());
 	}
 
 	@Override
@@ -192,6 +195,7 @@ public class JavaBasedConfig extends Config {
 	protected void registerActionArgumentResolvers(ActionArgumentResolverCollection collection) {
 		log.debug("register action-argument resolvers");
 		collection.add(new ModelResolver());
+		collection.add(new SessionIdResolver());
 		collection.add(new HttpServletRequestResolver());
 		collection.add(new HttpServletResponseResolver());
 		collection.add(new HttpSessionResolver());
