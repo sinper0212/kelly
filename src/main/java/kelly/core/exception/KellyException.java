@@ -6,7 +6,7 @@ package kelly.core.exception;
  * @author 应卓(yingzhor@gmail.com)
  *
  */
-public final class KellyException extends RuntimeException {
+public class KellyException extends RuntimeException {
 
 	private Throwable cause = null;
 	private String message = null;
