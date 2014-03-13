@@ -4,8 +4,10 @@ import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import kelly.core.config.Config;
+
 /**
- * 当前请求的Request/Response保存器 (线程安全)
+ * Kelly环境的上下文 (线程安全)
  * 
  * @author 应卓(yingzhor@gmail.com)
  * @since 1.0.0
@@ -13,6 +15,7 @@ import javax.servlet.http.HttpServletResponse;
  * @see HttpServletRequest
  * @see HttpServletResponse
  * @see ServletContext
+ * @see Config
  * @see ThreadLocal
  * 
  */
@@ -22,6 +25,7 @@ public final class WebContextHolder {
 	private static final ThreadLocal<HttpServletRequest>  REQUEST_HOLDER  = new ThreadLocal<HttpServletRequest>();
 	private static final ThreadLocal<HttpServletResponse> RESPONSE_HOLDER = new ThreadLocal<HttpServletResponse>();
 	private static ServletContext SERVLET_CONTEXT = null;
+	private static Config CONFIG = null;
 	
 	public static WebContextHolder getInstance() {
 		return INSTANCE;
@@ -48,6 +52,10 @@ public final class WebContextHolder {
 		SERVLET_CONTEXT = servletContext;
 	}
 	
+	void setConfig(Config config) {
+		CONFIG = config;
+	}
+	
 	public HttpServletRequest getRequest() {
 		return REQUEST_HOLDER.get();
 	}
@@ -58,6 +66,10 @@ public final class WebContextHolder {
 	
 	public ServletContext getServletContext() {
 		return SERVLET_CONTEXT;
+	}
+	
+	public Config getConfig() {
+		return CONFIG;
 	}
 
 }

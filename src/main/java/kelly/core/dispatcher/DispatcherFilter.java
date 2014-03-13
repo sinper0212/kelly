@@ -39,7 +39,6 @@ public class DispatcherFilter extends AbstractDispatchFilter {
 	
 	@Override
 	public void init(FilterConfig filterConfig) throws ServletException {
-		WebContextHolder.getInstance().setServletContext(filterConfig.getServletContext());
 		
 		String className = filterConfig.getInitParameter("kelly.config");
 		if (className == null) {
@@ -49,6 +48,9 @@ public class DispatcherFilter extends AbstractDispatchFilter {
 			Class<?> cls = ClassLoaderUtils.loadClass(className);
 			config = (JavaBasedConfig) ReflectionUtils.invokeConstructor(cls);
 		}
+
+		WebContextHolder.getInstance().setServletContext(filterConfig.getServletContext());
+		WebContextHolder.getInstance().setConfig(config);
 	}
 
 	@Override

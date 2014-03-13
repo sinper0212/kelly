@@ -1,6 +1,5 @@
 package kelly.core.config;
 
-import java.lang.annotation.Annotation;
 import java.lang.reflect.Method;
 import java.lang.reflect.Modifier;
 import java.util.Collections;
@@ -14,7 +13,6 @@ import kelly.core.action.ActionCollection;
 import kelly.core.action.ActionExecutor;
 import kelly.core.action.ActionFinder;
 import kelly.core.action.InvokableActionFactory;
-import kelly.core.annotation.Component;
 import kelly.core.annotation.Controller;
 import kelly.core.argument.BooleanResolver;
 import kelly.core.argument.CastorForwardingResolver;
@@ -50,11 +48,8 @@ import kelly.util.ClassUtils;
 import kelly.util.scan.ClassLookupUtils;
 
 @SuppressWarnings({ "unchecked" })
-public class JavaBasedConfig extends Config {
-	
-	protected static final Class<? extends Annotation>[] KELLY_SCAN_ANNOTATIONS = 
-							new Class[] {Component.class, Controller.class};
-	
+public class JavaBasedConfig extends AbstractJavaBasedConfig {
+
 	// -----------------------------------------------------------------------------------------------
 
 	public JavaBasedConfig() {
@@ -166,33 +161,33 @@ public class JavaBasedConfig extends Config {
 	// ------------------------------------------------------------------------------------------
 	
 	@Override
-	protected Injector getInjector() {
+	public Injector getInjector() {
 		return NOPInjector.INSTANCE;
 	}
 	
 	@Override
-	protected JsonFactory getJsonFactory() {
+	public JsonFactory getJsonFactory() {
 		return Dependencies.checkFastjson() ? new FastjsonJsonFactory() : NOPJsonFactory.INSTANCE;
 	}
 
 	@Override
-	protected String[] packagesToScan() {
+	public String[] packagesToScan() {
 		return null;
 	}
 
 	@Override
-	protected void registerConverters(ConversionService conversionService) {
+	public void registerConverters(ConversionService conversionService) {
 		log.debug("register converters");
 		conversionService.add(new StringConverter());
 	}
 
 	@Override
-	protected void registerInterceptors(InterceptorCollection interceptorCollection) {
+	public void registerInterceptors(InterceptorCollection interceptorCollection) {
 		log.debug("register interceptors");
 	}
 
 	@Override
-	protected void registerActionArgumentResolvers(ActionArgumentResolverCollection collection) {
+	public void registerActionArgumentResolvers(ActionArgumentResolverCollection collection) {
 		log.debug("register action-argument resolvers");
 		collection.add(new ModelResolver());
 		collection.add(new SessionIdResolver());
@@ -209,7 +204,7 @@ public class JavaBasedConfig extends Config {
 	}
 
 	@Override
-	protected void registerViewResolvers(SortedSet<ViewResolver> viewResolverSet) {
+	public void registerViewResolvers(SortedSet<ViewResolver> viewResolverSet) {
 		log.debug("register view resolvers");
 		viewResolverSet.add(new CommittedViewResolver());
 		viewResolverSet.add(new RedirectViewResolver());
