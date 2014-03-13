@@ -22,7 +22,9 @@ public class ServletOutputStreamResolver extends AbstractActionArgumentResolver 
 	@Override
 	public Object resolve(ActionArgument actionArgument, Castor castor, HttpServletRequest request, HttpServletResponse response) throws KellyException {
 		try {
-			return response.getOutputStream();
+			ServletOutputStream out = response.getOutputStream();
+			OutputHolder.getInstance().setServletOutputStream(out);
+			return out;
 		} catch (IOException e) {
 			throw new KellyException(e);
 		}

@@ -22,7 +22,9 @@ public class PrintWriterResolver extends AbstractActionArgumentResolver {
 	@Override
 	public Object resolve(ActionArgument actionArgument, Castor castor, HttpServletRequest request, HttpServletResponse response) throws KellyException {
 		try {
-			return response.getWriter();
+			PrintWriter out = response.getWriter();
+			OutputHolder.getInstance().setPrintWriter(out);
+			return out;
 		} catch (IOException e) {
 			throw new KellyException(e);
 		}

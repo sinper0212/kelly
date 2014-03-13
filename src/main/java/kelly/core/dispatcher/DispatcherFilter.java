@@ -25,12 +25,11 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 
-
 /**
  * Kelly框架核心
  * 
  * @author 应卓(yingzhor@gmail.com)
- *
+ * @since 1.0.0
  */
 public class DispatcherFilter extends AbstractDispatchFilter {
 
@@ -39,23 +38,21 @@ public class DispatcherFilter extends AbstractDispatchFilter {
 	
 	@Override
 	public void init(FilterConfig filterConfig) throws ServletException {
-		
+		WebContextHolder.getInstance().setServletContext(filterConfig.getServletContext());
+
 		String className = filterConfig.getInitParameter("kelly.config");
 		if (className == null) {
 			config = new JavaBasedConfig();
-		}
-		else {
+		} else {
 			Class<?> cls = ClassLoaderUtils.loadClass(className);
 			config = (JavaBasedConfig) ReflectionUtils.invokeConstructor(cls);
 		}
 
-		WebContextHolder.getInstance().setServletContext(filterConfig.getServletContext());
 		WebContextHolder.getInstance().setConfig(config);
 	}
 
 	@Override
-	protected void doFilter(HttpServletRequest request, HttpServletResponse response, FilterChain chain)
-			throws IOException, ServletException
+	protected void doFilter(HttpServletRequest request, HttpServletResponse response, FilterChain chain) throws IOException, ServletException
 	{
 		String uri = request.getRequestURI();
 		

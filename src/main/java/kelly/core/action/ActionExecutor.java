@@ -11,6 +11,7 @@ import kelly.core.Aware;
 import kelly.core.Model;
 import kelly.core.ModelAndView;
 import kelly.core.annotation.Interceptors;
+import kelly.core.argument.OutputHolder;
 import kelly.core.interceptor.Interceptor;
 import kelly.core.interceptor.InterceptorCollection;
 import kelly.core.resource.ByteArrayResource;
@@ -59,6 +60,14 @@ public final class ActionExecutor implements Aware<InterceptorCollection> {
 		}
 		
 		Object result = ReflectionUtils.invokeMethod(method, controllerObject, args);
+		
+		if (OutputHolder.getInstance().getPrintWriter() != null) {
+			OutputHolder.getInstance().getPrintWriter().flush();
+		}
+		
+		if (OutputHolder.getInstance().getServletOutputStream() != null) {
+			OutputHolder.getInstance().getServletOutputStream().flush();
+		}
 		
 		while (index-- != 0) {
 			interceptorArray[index].postHandle(request, response);

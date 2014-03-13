@@ -15,6 +15,7 @@ import kelly.core.config.Config;
  * @see HttpServletRequest
  * @see HttpServletResponse
  * @see ServletContext
+ * @see ServletContext#getRealPath(String)
  * @see Config
  * @see ThreadLocal
  * 
@@ -52,10 +53,13 @@ public final class WebContextHolder {
 		SERVLET_CONTEXT = servletContext;
 	}
 	
+	// 包内访问
 	void setConfig(Config config) {
 		CONFIG = config;
 	}
 	
+	// -------------------------------------------------------------------------------------------------
+
 	public HttpServletRequest getRequest() {
 		return REQUEST_HOLDER.get();
 	}
@@ -66,6 +70,11 @@ public final class WebContextHolder {
 	
 	public ServletContext getServletContext() {
 		return SERVLET_CONTEXT;
+	}
+	
+	public String getRealPath() {
+		String path = getServletContext().getRealPath("/");
+		return path.endsWith("/") ? path.substring(0, path.length() - 1) : path;
 	}
 	
 	public Config getConfig() {
