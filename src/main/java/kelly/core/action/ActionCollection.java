@@ -57,12 +57,12 @@ public final class ActionCollection implements Addable<Action>, InvokableActionF
 	@Override
 	public InvokableAction create(Action action) {
 		Class<?> controllerClass = action.getControllerClass();
-		Object controllerObject = singtonControllerCache.get(controllerClass);
-		if (controllerObject == null) {
-			controllerObject = ReflectionUtils.invokeConstructor(controllerClass);
-			injector.inject(controllerObject);
+		Object cached = singtonControllerCache.get(controllerClass);
+		if (cached == null) {
+			cached = ReflectionUtils.invokeConstructor(controllerClass);
+			injector.inject(cached);
 		}
-		return new InvokableAction(controllerObject, action);
+		return new InvokableAction(cached, action);
 	}
 
 	@Override
