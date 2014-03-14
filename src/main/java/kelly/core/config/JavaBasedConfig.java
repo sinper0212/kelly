@@ -16,6 +16,7 @@ import kelly.core.action.InvokableActionFactory;
 import kelly.core.annotation.Controller;
 import kelly.core.argument.BooleanResolver;
 import kelly.core.argument.CastorForwardingResolver;
+import kelly.core.argument.CreateableActionArgument;
 import kelly.core.argument.DateResolver;
 import kelly.core.argument.HttpServletRequestResolver;
 import kelly.core.argument.HttpServletResponseResolver;
@@ -26,8 +27,13 @@ import kelly.core.argument.PropertyEditorForwardingResolver;
 import kelly.core.argument.ServletContextResolver;
 import kelly.core.argument.ServletOutputStreamResolver;
 import kelly.core.argument.SessionIdResolver;
+import kelly.core.castor.BooleanConverter;
+import kelly.core.castor.ClassConverter;
 import kelly.core.castor.ConversionService;
 import kelly.core.castor.Converter;
+import kelly.core.castor.DoubleConverter;
+import kelly.core.castor.FloatConverter;
+import kelly.core.castor.IntConverter;
 import kelly.core.castor.StringConverter;
 import kelly.core.functor.Predicate;
 import kelly.core.injector.Injector;
@@ -179,6 +185,11 @@ public class JavaBasedConfig extends AbstractJavaBasedConfig {
 	public void registerConverters(ConversionService conversionService) {
 		log.debug("register converters");
 		conversionService.add(new StringConverter());
+		conversionService.add(new BooleanConverter());
+		conversionService.add(new IntConverter());
+		conversionService.add(new FloatConverter());
+		conversionService.add(new DoubleConverter());
+		conversionService.add(new ClassConverter());
 	}
 
 	@Override
@@ -201,6 +212,7 @@ public class JavaBasedConfig extends AbstractJavaBasedConfig {
 		collection.add(new BooleanResolver());
 		collection.add(new PropertyEditorForwardingResolver());
 		collection.add(new CastorForwardingResolver());
+		collection.add(new CreateableActionArgument());
 	}
 
 	@Override
