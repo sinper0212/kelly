@@ -41,6 +41,12 @@ public final class ActionFinder implements Aware<ActionCollection> {
 		List<Action> all = actionCollection.getActionList();
 		List<Action> found = new ArrayList<Action>();
 		String uri = request.getRequestURI();
+		
+		int lastDotIndex = uri.lastIndexOf('.');
+		if (-1 != lastDotIndex) {
+			uri = uri.substring(0, lastDotIndex);
+		}
+		
 		RequestMethod met = null;
 		try {
 			met = RequestMethod.valueOf(request.getMethod().trim().toUpperCase());
