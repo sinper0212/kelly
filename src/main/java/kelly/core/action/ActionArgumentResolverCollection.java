@@ -35,12 +35,13 @@ public final class ActionArgumentResolverCollection
 	// ---------------------------------------------------------------------------------
 
 	public ActionArgumentResolverCollection() {
+		super();
 	}
 	
 	// ---------------------------------------------------------------------------------
 	
 	public boolean supports(ActionArgument actionArgument, HttpServletRequest request) {
-		return findActionArgumentResolver(actionArgument, request) != null;
+		return findActionArgumentResolver(actionArgument) != null;
 	}
 	
 	public Object[] resolve(ActionArgument[] actionArguments, HttpServletRequest request, HttpServletResponse response) throws KellyException {
@@ -50,20 +51,32 @@ public final class ActionArgumentResolverCollection
 		
 		List<Object> params = new ArrayList<Object>();
 		for (ActionArgument actionArgument : actionArguments) {
-			ActionArgumentResolver resolver = findActionArgumentResolver(actionArgument, request);
+			ActionArgumentResolver resolver = findActionArgumentResolver(actionArgument);
 			if (resolver == null) {
 				if (actionArgument.isNullable()) {
-					params.add(null);
+					Class<?> cls = actionArgument.getParameterType();
+					params.add(getDefault(cls));
 					continue;
 				} else {
 					throw new KellyException("Cannot find resolver for action-argument : " + actionArgument);
 				}
 			}
-			Object object = resolver.resolve(actionArgument, conversionService, request, response);
+			Object object = resolver.resolve(actionArgument, conversionService);
 			params.add(object);
 		}
-		
 		return params.toArray();
+	}
+
+	private Object getDefault(Class<?> cls) {
+		if (cls == boolean.class) return false;
+		if (cls == byte.class) return 0;
+		if (cls == short.class) return 0;
+		if (cls == char.class) return 0;
+		if (cls == int.class) return 0;
+		if (cls == long.class) return 0L;
+		if (cls == float.class) return 0F;
+		if (cls == double.class) return 0D;
+		return null;
 	}
 
 	@Override
@@ -86,12 +99,12 @@ public final class ActionArgumentResolverCollection
 
 	// ---------------------------------------------------------------------------------
 
-	private ActionArgumentResolver findActionArgumentResolver(ActionArgument actionArgument, HttpServletRequest request) {
+	private ActionArgumentResolver findActionArgumentResolver(ActionArgument actionArgument) {
 		if (actionArgument == null) {
 			return null;
 		}
 		for (ActionArgumentResolver resolver : actionArgumentResolverList) {
-			if (resolver.supports(actionArgument, conversionService, request)) {
+			if (resolver.supports(actionArgument, conversionService)) {
 				return resolver;
 			}
 		}
