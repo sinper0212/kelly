@@ -14,23 +14,22 @@ import kelly.core.action.ActionExecutor;
 import kelly.core.action.ActionFinder;
 import kelly.core.action.InvokableActionFactory;
 import kelly.core.annotation.Controller;
-import kelly.core.argument.BooleanResolver;
-import kelly.core.argument.CastorForwardingResolver;
-import kelly.core.argument.CreateableActionArgument;
-import kelly.core.argument.DateResolver;
-import kelly.core.argument.HttpServletRequestResolver;
-import kelly.core.argument.HttpServletResponseResolver;
-import kelly.core.argument.HttpSessionResolver;
-import kelly.core.argument.ModelResolver;
-import kelly.core.argument.PrintWriterResolver;
-import kelly.core.argument.PropertyEditorForwardingResolver;
-import kelly.core.argument.ServletContextResolver;
-import kelly.core.argument.ServletOutputStreamResolver;
-import kelly.core.argument.SessionIdResolver;
+import kelly.core.annotation.Mapping;
+import kelly.core.argument.CastorActionArgumentResolver;
+import kelly.core.argument.ModelActionArgumentResolver;
+import kelly.core.argument.NewInstanceActionArgumentResolver;
+import kelly.core.argument.PrintWriterActionArgumentResolver;
+import kelly.core.argument.RequestActionArgumentResolver;
+import kelly.core.argument.ResponseActionArgumentResolver;
+import kelly.core.argument.ServletContextActionArgumentResolver;
+import kelly.core.argument.ServletOutputStreamActionArgumentResolver;
+import kelly.core.argument.SessionActionArgumentResolver;
+import kelly.core.argument.SessionIdActionArgumentResolver;
 import kelly.core.castor.BooleanConverter;
 import kelly.core.castor.ClassConverter;
 import kelly.core.castor.ConversionService;
 import kelly.core.castor.Converter;
+import kelly.core.castor.DateConverter;
 import kelly.core.castor.DoubleConverter;
 import kelly.core.castor.FloatConverter;
 import kelly.core.castor.IntConverter;
@@ -83,6 +82,7 @@ public class JavaBasedConfig extends AbstractJavaBasedConfig {
 			for (Method method : methods) {
 				int mod = method.getModifiers();
 				if (! Modifier.isPublic(mod)) continue;
+				if (method.getAnnotation(Mapping.class) == null) continue;
 				Action action = new Action(cls, method);
 				actionCollection.add(action);
 				log.trace("Action found: {}", action.getPattern());
@@ -185,6 +185,7 @@ public class JavaBasedConfig extends AbstractJavaBasedConfig {
 	public void registerConverters(ConversionService conversionService) {
 		log.debug("register converters");
 		conversionService.add(new StringConverter());
+		conversionService.add(new DateConverter());
 		conversionService.add(new BooleanConverter());
 		conversionService.add(new IntConverter());
 		conversionService.add(new FloatConverter());
@@ -200,19 +201,16 @@ public class JavaBasedConfig extends AbstractJavaBasedConfig {
 	@Override
 	public void registerActionArgumentResolvers(ActionArgumentResolverCollection collection) {
 		log.debug("register action-argument resolvers");
-		collection.add(new ModelResolver());
-		collection.add(new SessionIdResolver());
-		collection.add(new HttpServletRequestResolver());
-		collection.add(new HttpServletResponseResolver());
-		collection.add(new HttpSessionResolver());
-		collection.add(new ServletContextResolver());
-		collection.add(new PrintWriterResolver());
-		collection.add(new ServletOutputStreamResolver());
-		collection.add(new DateResolver());
-		collection.add(new BooleanResolver());
-		collection.add(new PropertyEditorForwardingResolver());
-		collection.add(new CastorForwardingResolver());
-		collection.add(new CreateableActionArgument());
+		collection.add(new RequestActionArgumentResolver());
+		collection.add(new ResponseActionArgumentResolver());
+		collection.add(new SessionActionArgumentResolver());
+		collection.add(new SessionIdActionArgumentResolver());
+		collection.add(new ServletContextActionArgumentResolver());
+		collection.add(new ModelActionArgumentResolver());
+		collection.add(new PrintWriterActionArgumentResolver());
+		collection.add(new ServletOutputStreamActionArgumentResolver());
+		collection.add(new NewInstanceActionArgumentResolver());
+		collection.add(new CastorActionArgumentResolver());
 	}
 
 	@Override
