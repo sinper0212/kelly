@@ -27,12 +27,12 @@ public final class ConversionService implements Addable<Class<? extends Converte
 	
 	@Override
 	public boolean canConvert(Class<?> targetType) {
-		return cache.containsKey(targetType);
+		return cache.containsKey(toWrapperType(targetType));
 	}
 
 	@Override
 	public <T> T convert(String source, Class<T> targetType) {
-		Converter<?> converter = cache.get(targetType);
+		Converter<?> converter = cache.get(toWrapperType(targetType));
 		return (T) converter.convert(source);
 	}
 	
@@ -66,10 +66,42 @@ public final class ConversionService implements Addable<Class<? extends Converte
 			if (interfacs.toString().startsWith(CONVERTER_CLASS_NAME)) {
 				if (interfacs instanceof ParameterizedType) {
 					ParameterizedType parameterizedType = (ParameterizedType) interfacs;
-					return (Class<?>) parameterizedType.getActualTypeArguments()[0];
+					try {
+						return (Class<?>) parameterizedType.getActualTypeArguments()[0];
+					} catch (ClassCastException e) {
+						return Class.class;
+					}
 				}
 			}
 		}
 		return null;
+	}
+	
+	private Class<?> toWrapperType(Class<?> targetType) {
+		if (targetType == boolean.class) {
+			targetType = Boolean.class;
+		}
+		if (targetType == byte.class) {
+			targetType = Byte.class;
+		}
+		if (targetType == short.class) {
+			targetType = Short.class;
+		}
+		if (targetType == char.class) {
+			targetType = Character.class;
+		}
+		if (targetType == int.class) {
+			targetType = Integer.class;
+		}
+		if (targetType == long.class) {
+			targetType = Long.class;
+		}
+		if (targetType == float.class) {
+			targetType = Float.class;
+		}
+		if (targetType == double.class) {
+			targetType = Double.class;
+		}
+		return targetType;
 	}
 }
