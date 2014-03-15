@@ -1,8 +1,5 @@
 package kelly.core.action;
 
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-
 import kelly.core.castor.Castor;
 import kelly.core.exception.KellyException;
 
@@ -14,8 +11,8 @@ import kelly.core.exception.KellyException;
  */
 public interface ActionArgumentResolver {
 
-	public boolean supports(ActionArgument actionArgument, Castor castor, HttpServletRequest request);
+	public boolean supports(ActionArgument actionArgument, Castor castor);
 
-	public Object resolve(ActionArgument actionArgument, Castor castor, HttpServletRequest request, HttpServletResponse response) throws KellyException;
+	public Object resolve(ActionArgument actionArgument, Castor castor) throws KellyException;
 
 }
