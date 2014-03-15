@@ -33,6 +33,7 @@ import kelly.core.castor.DateConverter;
 import kelly.core.castor.DoubleConverter;
 import kelly.core.castor.FloatConverter;
 import kelly.core.castor.IntConverter;
+import kelly.core.castor.NumberConverter;
 import kelly.core.castor.StringConverter;
 import kelly.core.functor.Predicate;
 import kelly.core.injector.Injector;
@@ -190,6 +191,7 @@ public class JavaBasedConfig extends AbstractJavaBasedConfig {
 		conversionService.add(new IntConverter());
 		conversionService.add(new FloatConverter());
 		conversionService.add(new DoubleConverter());
+		conversionService.add(new NumberConverter());
 		conversionService.add(new ClassConverter());
 	}
 
