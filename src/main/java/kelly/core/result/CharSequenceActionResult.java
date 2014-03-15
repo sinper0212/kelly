@@ -4,7 +4,6 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import kelly.core.action.Action;
-import kelly.util.StringUtils;
 
 public final class CharSequenceActionResult extends AbstractActionResult {
 
@@ -14,7 +13,7 @@ public final class CharSequenceActionResult extends AbstractActionResult {
 
 	@Override
 	public String getView() {
-		return StringUtils.removeWhitespace(((CharSequence) result).toString());
+		return getActualResult(CharSequence.class).toString();
 	}
 
 }

@@ -49,7 +49,12 @@ public abstract class AbstractActionResult implements ActionResult {
 
 	@Override
 	public String getView() {
-		return request.getRequestURI();
+		String uri = request.getRequestURI();
+		int lastDotIndex = uri.lastIndexOf('.');
+		if (-1 != lastDotIndex) {
+			uri = uri.substring(0, lastDotIndex);
+		}
+		return uri;
 	}
 
 	@Override
