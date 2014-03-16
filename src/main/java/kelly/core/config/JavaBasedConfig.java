@@ -59,7 +59,6 @@ public class JavaBasedConfig extends AbstractJavaBasedConfig {
 	// -----------------------------------------------------------------------------------------------
 
 	public JavaBasedConfig() {
-		super();
 
 		// 扫描注册用户扩展组件
 		Set<Class<?>> classes = ClassLookupUtils.lookupClasses(packagesToScan(), true, KELLY_SCAN_ANNOTATIONS);
@@ -82,8 +81,9 @@ public class JavaBasedConfig extends AbstractJavaBasedConfig {
 			
 			for (Method method : methods) {
 				int mod = method.getModifiers();
-				if (! Modifier.isPublic(mod)) continue;
-				if (method.getAnnotation(Mapping.class) == null) continue;
+				if (Modifier.isPublic(mod) == false) continue;			// 排除非public方法
+				if (Modifier.isStatic(mod) == true)  continue;			// 排除static方法
+				if (method.getAnnotation(Mapping.class) == null) continue; // 排除没有@Mapping的方法
 				Action action = new Action(cls, method);
 				actionCollection.add(action);
 				log.trace("Action found: {}", action.getPattern());
