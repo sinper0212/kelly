@@ -7,7 +7,7 @@ import java.util.Date;
 
 import kelly.core.annotation.DateTimePattern;
 import kelly.core.argument.ActionArgumentHolder;
-import kelly.core.exception.KellyException;
+import kelly.core.exception.ConvertException;
 
 public class DateConverter implements Converter<Date> {
 
@@ -26,7 +26,7 @@ public class DateConverter implements Converter<Date> {
 		try {
 			return format.parse(source);
 		} catch (ParseException e) {
-			throw new KellyException(e);
+			throw new ConvertException(e);
 		}
 	}
 

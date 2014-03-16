@@ -6,7 +6,7 @@ import java.io.PrintWriter;
 import kelly.core.action.ActionArgument;
 import kelly.core.castor.Castor;
 import kelly.core.dispatcher.WebContextHolder;
-import kelly.core.exception.KellyException;
+import kelly.core.exception.InputOutputException;
 import kelly.util.ClassUtils;
 
 public class PrintWriterActionArgumentResolver extends AbstractActionArgumentResolver {
@@ -18,13 +18,13 @@ public class PrintWriterActionArgumentResolver extends AbstractActionArgumentRes
 	}
 
 	@Override
-	public Object resolve(ActionArgument actionArgument, Castor castor) throws KellyException {
+	public Object resolve(ActionArgument actionArgument, Castor castor) {
 		try {
 			PrintWriter out = WebContextHolder.getInstance().getResponse().getWriter();
 			OutputHolder.getInstance().setPrintWriter(out);
 			return out;
 		} catch (IOException ex) {
-			throw new KellyException(ex);
+			throw new InputOutputException(ex);
 		}
 	}
 

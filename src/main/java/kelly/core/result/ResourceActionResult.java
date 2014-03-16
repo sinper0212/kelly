@@ -8,7 +8,7 @@ import javax.servlet.http.HttpServletResponse;
 
 import kelly.core.Model;
 import kelly.core.action.Action;
-import kelly.core.exception.KellyException;
+import kelly.core.exception.InputOutputException;
 import kelly.core.model.ImmutableModel;
 import kelly.core.resource.Resource;
 
@@ -42,7 +42,7 @@ public class ResourceActionResult extends AbstractActionResult {
 		try {
 			return super.getActualResult(Resource.class).getInputStream();
 		} catch (IOException e) {
-			throw new KellyException(e);
+			throw new InputOutputException(e);
 		}
 	}
 

@@ -8,7 +8,8 @@ import javax.servlet.http.HttpServletRequest;
 
 import kelly.core.Aware;
 import kelly.core.RequestMethod;
-import kelly.core.exception.KellyException;
+import kelly.core.exception.MultipleActionFoundException;
+import kelly.core.exception.UnsupportedRequestMethodException;
 import kelly.core.path.AntStylePathMatcher;
 import kelly.core.path.PathMatcher;
 
@@ -51,7 +52,7 @@ public final class ActionFinder implements Aware<ActionCollection> {
 		try {
 			met = RequestMethod.valueOf(request.getMethod().trim().toUpperCase());
 		} catch (Exception e) {
-			throw new KellyException("Unsupported request method : " + request.getMethod());
+			throw new UnsupportedRequestMethodException("Unsupported request method : " + request.getMethod());
 		}
 		
 		for (Action action : all) {
@@ -68,7 +69,7 @@ public final class ActionFinder implements Aware<ActionCollection> {
 		}
 		
 		if (found.size() >= 2) {
-			throw new KellyException("Found multiple actions");
+			throw new MultipleActionFoundException("Found multiple actions");
 		}
 
 		Action result = found.get(0);

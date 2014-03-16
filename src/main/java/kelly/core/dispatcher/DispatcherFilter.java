@@ -14,7 +14,7 @@ import kelly.core.annotation.ContentType;
 import kelly.core.annotation.Header;
 import kelly.core.annotation.Headers;
 import kelly.core.config.JavaBasedConfig;
-import kelly.core.exception.KellyException;
+import kelly.core.exception.ViewNotFoundException;
 import kelly.core.result.ActionResult;
 import kelly.core.view.View;
 import kelly.core.view.ViewResolver;
@@ -83,7 +83,8 @@ public class DispatcherFilter extends AbstractDispatchFilter {
 			actionResult = config.getActionExecutor().execute(invokableAction, args, request, response);
 		} catch (Throwable e) {
 			logger.error("action executor failed.", e);
-			throw new KellyException(e);
+			// TODO
+			throw new RuntimeException(e);
 		}
 		
 		if (actionResult == null) {
@@ -103,12 +104,13 @@ public class DispatcherFilter extends AbstractDispatchFilter {
 		}
 		
 		if (view == null) {
-			throw new KellyException("Cannot find a view to render.");
+			throw new ViewNotFoundException("Cannot find a view to render.");
 		}
 		try {
 			view.render(actionResult, request, response, request.getLocale());
 		} catch (Throwable e) {
-			throw new KellyException(e);
+			// TODO
+			throw new RuntimeException(e);
 		}
 	}
 

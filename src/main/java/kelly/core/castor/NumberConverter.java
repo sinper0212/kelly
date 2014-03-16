@@ -5,7 +5,7 @@ import java.text.ParseException;
 
 import kelly.core.annotation.NumberPattern;
 import kelly.core.argument.ActionArgumentHolder;
-import kelly.core.exception.KellyException;
+import kelly.core.exception.ConvertException;
 
 public class NumberConverter implements Converter<Number> {
 
@@ -26,7 +26,7 @@ public class NumberConverter implements Converter<Number> {
 		try {
 			return format.parse(source);
 		} catch (ParseException e) {
-			throw new KellyException(e);
+			throw new ConvertException(e);
 		}
 	}
 

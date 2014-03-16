@@ -4,7 +4,6 @@ import kelly.core.action.ActionArgument;
 import kelly.core.annotation.SessionId;
 import kelly.core.castor.Castor;
 import kelly.core.dispatcher.WebContextHolder;
-import kelly.core.exception.KellyException;
 
 public class SessionIdActionArgumentResolver extends AbstractActionArgumentResolver {
 
@@ -15,7 +14,7 @@ public class SessionIdActionArgumentResolver extends AbstractActionArgumentResol
 	}
 
 	@Override
-	public Object resolve(ActionArgument actionArgument, Castor castor) throws KellyException {
+	public Object resolve(ActionArgument actionArgument, Castor castor) {
 		return WebContextHolder.getInstance().getRequest().getSession().getId();
 	}
 

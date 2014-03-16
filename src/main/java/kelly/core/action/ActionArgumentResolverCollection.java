@@ -10,7 +10,7 @@ import javax.servlet.http.HttpServletResponse;
 import kelly.core.Addable;
 import kelly.core.Aware;
 import kelly.core.castor.ConversionService;
-import kelly.core.exception.KellyException;
+import kelly.core.exception.ActionNotFoundException;
 import kelly.util.ReflectionUtils;
 import kelly.util.Validate;
 
@@ -44,7 +44,7 @@ public final class ActionArgumentResolverCollection
 		return findActionArgumentResolver(actionArgument) != null;
 	}
 	
-	public Object[] resolve(ActionArgument[] actionArguments, HttpServletRequest request, HttpServletResponse response) throws KellyException {
+	public Object[] resolve(ActionArgument[] actionArguments, HttpServletRequest request, HttpServletResponse response) {
 		if (actionArguments.length == 0) {
 			return EMPTY_OBJECT_ARRAY;
 		}
@@ -58,7 +58,7 @@ public final class ActionArgumentResolverCollection
 					params.add(getDefault(cls));
 					continue;
 				} else {
-					throw new KellyException("Cannot find resolver for action-argument : " + actionArgument);
+					throw new ActionNotFoundException("Cannot find resolver for action-argument : " + actionArgument);
 				}
 			}
 			Object object = resolver.resolve(actionArgument, conversionService);

@@ -2,7 +2,6 @@ package kelly.core.argument;
 
 import kelly.core.action.ActionArgument;
 import kelly.core.castor.Castor;
-import kelly.core.exception.KellyException;
 
 public class CastorActionArgumentResolver extends AbstractActionArgumentResolver {
 
@@ -12,7 +11,7 @@ public class CastorActionArgumentResolver extends AbstractActionArgumentResolver
 	}
 
 	@Override
-	public Object resolve(ActionArgument actionArgument, Castor castor) throws KellyException {
+	public Object resolve(ActionArgument actionArgument, Castor castor) {
 		try {
 			ActionArgumentHolder.getInstance().setActionArgument(actionArgument);
 			return castor.convert(getSource(actionArgument), actionArgument.getParameterType());

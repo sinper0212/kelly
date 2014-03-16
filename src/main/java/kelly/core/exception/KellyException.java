@@ -6,56 +6,22 @@ package kelly.core.exception;
  * @author 应卓(yingzhor@gmail.com)
  *
  */
-public class KellyException extends RuntimeException {
-
-	private Throwable cause = null;
-	private String message = null;
-	
-	public static KellyException create() {
-		return new KellyException();
-	}
-	
-	public static KellyException create(String message) {
-		return new KellyException(message);
-	}
-	
-	public static KellyException create(Throwable cause) {
-		return new KellyException(cause);
-	}
-	
-	// ------------------------------------------------------------------------
+public abstract class KellyException extends RuntimeException {
 
 	public KellyException() {
+		super();
 	}
 	
 	public KellyException(String msg) {
-		this.message = msg;
+		super(msg);
 	}
-	
+
 	public KellyException(Throwable cause) {
-		if (cause == null) {
-			return;
-		} else {
-			this.message = cause.getMessage();
-			this.cause = cause;
-		}
+		super(cause);
 	}
 	
-	// ------------------------------------------------------------------------
-
-	@Override
-	public String toString() {
-		return getClass().getSimpleName() + " : " + message == null ? "" : message;
-	}
-	
-	// ------------------------------------------------------------------------
-
-	public Throwable getCause() {
-		return cause;
-	}
-
-	public String getMessage() {
-		return message;
+	public KellyException(String msg, Throwable cause) {
+		super(msg, cause);
 	}
 
 }

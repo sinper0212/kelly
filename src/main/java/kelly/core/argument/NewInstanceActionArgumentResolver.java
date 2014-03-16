@@ -13,7 +13,6 @@ import javax.servlet.http.HttpServletRequest;
 import kelly.core.action.ActionArgument;
 import kelly.core.castor.Castor;
 import kelly.core.dispatcher.WebContextHolder;
-import kelly.core.exception.KellyException;
 import kelly.util.ReflectionUtils;
 
 public class NewInstanceActionArgumentResolver extends AbstractActionArgumentResolver {
@@ -35,7 +34,7 @@ public class NewInstanceActionArgumentResolver extends AbstractActionArgumentRes
 	}
 
 	@Override
-	public Object resolve(ActionArgument actionArgument, Castor castor) throws KellyException {
+	public Object resolve(ActionArgument actionArgument, Castor castor) {
 		Object target = NEW_INSTANCE_HOLDER.get();
 		try {
 			return target;

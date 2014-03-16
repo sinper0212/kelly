@@ -5,7 +5,6 @@ import javax.servlet.ServletContext;
 import kelly.core.action.ActionArgument;
 import kelly.core.castor.Castor;
 import kelly.core.dispatcher.WebContextHolder;
-import kelly.core.exception.KellyException;
 import kelly.util.ClassUtils;
 
 public class ServletContextActionArgumentResolver extends AbstractActionArgumentResolver {
@@ -17,7 +16,7 @@ public class ServletContextActionArgumentResolver extends AbstractActionArgument
 	}
 
 	@Override
-	public Object resolve(ActionArgument actionArgument, Castor castor) throws KellyException {
+	public Object resolve(ActionArgument actionArgument, Castor castor) {
 		return WebContextHolder.getInstance().getServletContext();
 	}
 

@@ -7,7 +7,7 @@ import java.util.List;
 
 import kelly.core.annotation.Inject;
 import kelly.core.annotation.Nullable;
-import kelly.core.exception.KellyException;
+import kelly.core.exception.InjectException;
 
 import org.springframework.beans.BeansException;
 import org.springframework.context.ApplicationContext;
@@ -54,7 +54,7 @@ public abstract class AbstractSpringInjector implements Injector {
 					if (nullable) {
 						continue;
 					} else {
-						throw new KellyException("Inject failed for field " + field.toString() );
+						throw new InjectException("Inject failed for field " + field.toString() );
 					}
 				}
 				ReflectionUtils.makeAccessible(field);

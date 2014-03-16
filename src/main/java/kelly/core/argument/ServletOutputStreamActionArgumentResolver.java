@@ -7,7 +7,7 @@ import javax.servlet.ServletOutputStream;
 import kelly.core.action.ActionArgument;
 import kelly.core.castor.Castor;
 import kelly.core.dispatcher.WebContextHolder;
-import kelly.core.exception.KellyException;
+import kelly.core.exception.InputOutputException;
 import kelly.util.ClassUtils;
 
 public class ServletOutputStreamActionArgumentResolver extends AbstractActionArgumentResolver {
@@ -19,13 +19,13 @@ public class ServletOutputStreamActionArgumentResolver extends AbstractActionArg
 	}
 
 	@Override
-	public Object resolve(ActionArgument actionArgument, Castor castor) throws KellyException {
+	public Object resolve(ActionArgument actionArgument, Castor castor) {
 		try {
 			ServletOutputStream out = WebContextHolder.getInstance().getResponse().getOutputStream();
 			OutputHolder.getInstance().setServletOutputStream(out);
 			return out;
 		} catch (IOException e) {
-			throw new KellyException(e);
+			throw new InputOutputException(e);
 		}
 	}
 
