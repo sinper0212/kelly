@@ -1,6 +1,6 @@
 package kelly.core.path;
 
-import kelly.core.functor.Predicate;
+import kelly.core.Predicate;
 
 public class DefaultStaticResourcePredicate implements Predicate<String> {
 

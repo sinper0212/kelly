@@ -14,31 +14,17 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package kelly.core.exception;
+package kelly.core;
 
 
 /**
- * kelly框架抛出的异常
+ * 谓词
  * 
  * @author 应卓(yingzhor@gmail.com)
  *
  */
-public abstract class KellyException extends RuntimeException {
+public interface Predicate<T> {
 
-	public KellyException() {
-		super();
-	}
-	
-	public KellyException(String msg) {
-		super(msg);
-	}
-
-	public KellyException(Throwable cause) {
-		super(cause);
-	}
-	
-	public KellyException(String msg, Throwable cause) {
-		super(msg, cause);
-	}
+	boolean evaluate(T input);
 
 }
