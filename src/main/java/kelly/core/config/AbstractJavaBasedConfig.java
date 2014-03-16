@@ -17,6 +17,7 @@ import kelly.core.annotation.Component;
 import kelly.core.annotation.Controller;
 import kelly.core.castor.ConversionService;
 import kelly.core.castor.Converter;
+import kelly.core.castor.PropertyEditorFindingConversionService;
 import kelly.core.functor.Predicate;
 import kelly.core.interceptor.Interceptor;
 import kelly.core.interceptor.InterceptorCollection;
@@ -53,7 +54,7 @@ abstract class AbstractJavaBasedConfig implements Config {
 	
 	public final ActionExecutor actionExecutor = new ActionExecutor();
 	
-	public final ConversionService conversionService = new ConversionService();
+	public final ConversionService conversionService = new PropertyEditorFindingConversionService();
 	
 	public final ActionArgumentResolverCollection actionArgumentResolverCollection = new ActionArgumentResolverCollection();
 	

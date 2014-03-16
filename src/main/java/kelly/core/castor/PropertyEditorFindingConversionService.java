@@ -1,33 +1,26 @@
 package kelly.core.castor;
 
 import java.beans.PropertyEditor;
-import java.util.IdentityHashMap;
-import java.util.Map;
 
 import kelly.util.ClassLoaderUtils;
 import kelly.util.ReflectionUtils;
 
-public class PropertyEditorFindingConversionService 
-			extends ConversionService implements Castor
-{
-	private Map<Class<?>, PropertyEditor> propertyEditorCache = new IdentityHashMap<Class<?>, PropertyEditor>();
+public class PropertyEditorFindingConversionService extends ConversionService implements Castor {
 
+	private final ThreadLocal<PropertyEditor> editorHolder = new ThreadLocal<PropertyEditor>();
+	
 	@Override
 	public boolean canConvert(Class<?> targetType) {
 		if (super.canConvert(targetType)) {
 			return true;
 		}
 		
-		PropertyEditor editor = propertyEditorCache.get(targetType);
+		PropertyEditor editor = findPropertyEditor(targetType);
 		if (editor != null) {
+			editorHolder.set(editor);
 			return true;
-		}
-		else {
-			editor = findPropertyEditor(targetType);
-			if (editor == null) return false;
-			
-			propertyEditorCache.put(targetType, editor);
-			return true;
+		} else {
+			return false;
 		}
 	}
 
@@ -35,12 +28,15 @@ public class PropertyEditorFindingConversionService
 	@SuppressWarnings("unchecked")
 	public <T> T convert(String source, Class<T> targetType) {
 		if (super.canConvert(targetType)) {
-			return super.convert(source, targetType);		
+			return super.convert(source, targetType);
 		}
-		
-		PropertyEditor editor = propertyEditorCache.get(targetType);
+		PropertyEditor editor = editorHolder.get();
 		editor.setAsText(source);
-		return (T) editor.getValue();
+		try {
+			return (T) editor.getValue();
+		} finally {
+			editorHolder.set(null);
+		}
 	}
 	
 	// ------------------------------------------------------------------
@@ -49,7 +45,7 @@ public class PropertyEditorFindingConversionService
 		try {
 			Class<?> cls = ClassLoaderUtils.loadClass(targetType.getName() + "PropertyEditor");
 			return (PropertyEditor) ReflectionUtils.invokeConstructor(cls);
-		} catch (Exception e) {
+		} catch (Throwable e) {
 			return null;
 		}
 	}
