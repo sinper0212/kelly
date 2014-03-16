@@ -11,7 +11,7 @@ import kelly.util.ReflectionUtils;
 import kelly.util.Validate;
 
 @SuppressWarnings("unchecked")
-public final class ConversionService implements Addable<Class<? extends Converter<?>>>, Castor {
+public class ConversionService implements Addable<Class<? extends Converter<?>>>, Castor {
 
 	private final String CONVERTER_CLASS_NAME = Converter.class.getName();
 	
