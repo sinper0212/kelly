@@ -16,10 +16,11 @@
  */
 package kelly.core.exception;
 
-import java.util.IdentityHashMap;
+import java.util.Comparator;
 import java.util.Locale;
-import java.util.Map;
+import java.util.SortedMap;
 import java.util.SortedSet;
+import java.util.TreeMap;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
@@ -42,9 +43,15 @@ import kelly.util.ClassUtils;
  * 
  */
 public class ExceptionResolver implements Aware<SortedSet<ViewResolver>> {
+	
+	private static final Comparator<Class<? extends Throwable>> DEFAULT_COMPARATOR = new Comparator<Class<? extends Throwable>>() {
+		public int compare(Class<? extends Throwable> o1, Class<? extends Throwable> o2) {
+			return o1.getName().compareTo(o2.getName());
+		}
+	};
 
 	private SortedSet<ViewResolver> viewSortedSet;
-	private final Map<Class<? extends Throwable>, String> map = new IdentityHashMap<Class<? extends Throwable>, String>();
+	private final SortedMap<Class<? extends Throwable>, String> sortedMap = new TreeMap<Class<? extends Throwable>, String>(DEFAULT_COMPARATOR);
 
 	@Override
 	public void setComponent(SortedSet<ViewResolver> viewSortedSet) {
@@ -52,15 +59,17 @@ public class ExceptionResolver implements Aware<SortedSet<ViewResolver>> {
 	}
 
 	public void add(Throwable ex, String view) {
-		map.put(ex.getClass(), view);
+		sortedMap.put(ex.getClass(), view);
 	}
 	
 	public void resolve(Throwable ex, Action action, HttpServletRequest request, HttpServletResponse response, Locale locale) throws ServletException {
-		String viewName = map.get(ex);			// 先精确查找类型
+		String viewName = sortedMap.get(ex);			// 先精确查找类型
+		
+		// 如果无法精确找到则类型UP
 		if (viewName == null) {
-			for (Class<? extends Throwable> each : map.keySet()) {
+			for (Class<? extends Throwable> each : sortedMap.keySet()) {
 				if (ClassUtils.isAssignable(ex.getClass(), each)) {
-					viewName = map.get(each);
+					viewName = sortedMap.get(each);
 					break;
 				}
 			}
