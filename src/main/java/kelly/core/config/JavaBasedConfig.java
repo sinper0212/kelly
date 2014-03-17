@@ -33,6 +33,7 @@ import kelly.core.action.InvokableActionFactory;
 import kelly.core.annotation.Controller;
 import kelly.core.annotation.Mapping;
 import kelly.core.argument.CastorActionArgumentResolver;
+import kelly.core.argument.CommonsFileUploadActionArgumentResolver;
 import kelly.core.argument.ModelActionArgumentResolver;
 import kelly.core.argument.NewInstanceActionArgumentResolver;
 import kelly.core.argument.PrintWriterActionArgumentResolver;
@@ -244,6 +245,10 @@ public class JavaBasedConfig extends AbstractJavaBasedConfig {
 		collection.add(new ServletOutputStreamActionArgumentResolver());
 		collection.add(new NewInstanceActionArgumentResolver());
 		collection.add(new CastorActionArgumentResolver());
+
+		if (Dependencies.checkCommonsFileupload()) {
+			collection.add(new CommonsFileUploadActionArgumentResolver());
+		}
 	}
 
 	@Override
@@ -255,8 +260,6 @@ public class JavaBasedConfig extends AbstractJavaBasedConfig {
 		viewResolverSet.add(new JsonViewResolver(getJsonFactory()));
 		viewResolverSet.add(new JspViewResolver());
 
-		// 如果ClassPath中有jetbrick-template.xxx.jar
-		// 则加载JetxViewResolver的实例
 		if (Dependencies.checkJetx()) {
 			viewResolverSet.add(new JetxViewResolver());
 		}

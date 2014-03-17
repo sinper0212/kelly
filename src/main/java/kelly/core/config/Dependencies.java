@@ -27,6 +27,7 @@ class Dependencies {
 	private static final String SPRING_CLASS_NAME = "org.springframework.context.ApplicationContext";
 	private static final String FASTJSON_CLASS_NAME = "com.alibaba.fastjson.JSON";
 	private static final String JETBRICK_TEMPLATE_CLASS_NAME = "jetbrick.template.JetEngine";
+	private static final String COMMONS_FILEUPLOAD = "org.apache.commons.fileupload.servlet.ServletFileUpload";
 
 	// ------------------------------------------------------------------------------------------------
 	
@@ -56,10 +57,20 @@ class Dependencies {
 			return false;
 		}
 	}
+
+	public static boolean checkCommonsFileupload() {
+		try {
+			getClassLoader().loadClass(COMMONS_FILEUPLOAD);
+			return true;
+		} catch (ClassNotFoundException e) {
+			return false;
+		}
+	}
 	
 	// ------------------------------------------------------------------------------------------------
 	
 	private static ClassLoader getClassLoader() {
 		return Thread.currentThread().getContextClassLoader();
 	}
+
 }
