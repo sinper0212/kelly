@@ -58,12 +58,14 @@ public class ExceptionResolver implements Aware<SortedSet<ViewResolver>> {
 		this.viewSortedSet = viewSortedSet;
 	}
 
-	public void add(Throwable ex, String view) {
-		sortedMap.put(ex.getClass(), view);
+	public void add(Class<? extends Throwable> exType, String view) {
+		sortedMap.put(exType, view);
 	}
 	
 	public void resolve(Throwable ex, Action action, HttpServletRequest request, HttpServletResponse response, Locale locale) throws ServletException {
-		String viewName = sortedMap.get(ex);			// 先精确查找类型
+		String viewName = sortedMap.get(ex.getClass());			// 先精确查找类型
+		
+		System.out.println(sortedMap.size());
 		
 		// 如果无法精确找到则类型UP
 		if (viewName == null) {
@@ -81,8 +83,12 @@ public class ExceptionResolver implements Aware<SortedSet<ViewResolver>> {
 		
 		ActionResult result = new CharSequenceActionResult(viewName, action, request, response);
 		View view = null;
+		
+		System.out.println(viewSortedSet.size());
+	
 		for (ViewResolver resolver : viewSortedSet) {
 			view = resolver.resolve(result, locale);
+			if (view != null) break;
 		}
 		
 		if (view == null) {

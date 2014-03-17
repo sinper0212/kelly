@@ -52,6 +52,7 @@ import kelly.core.castor.FloatConverter;
 import kelly.core.castor.IntConverter;
 import kelly.core.castor.NumberConverter;
 import kelly.core.castor.StringConverter;
+import kelly.core.exception.ExceptionResolver;
 import kelly.core.injector.Injector;
 import kelly.core.injector.NOPInjector;
 import kelly.core.interceptor.Interceptor;
@@ -143,41 +144,55 @@ public class JavaBasedConfig extends AbstractJavaBasedConfig {
 	}
 	
 	// ------------------------------------------------------------------------------------------
-	
+
+	@Override
 	public ActionCollection getActionCollection() {
 		return actionCollection;
 	}
 
+	@Override
 	public ActionFinder getActionFinder() {
 		return actionFinder;
 	}
 
+	@Override
 	public InvokableActionFactory getInvokableActionFactory() {
 		return invokableActionFactory;
 	}
 
+	@Override
 	public InterceptorCollection getInterceptorCollection() {
 		return interceptorCollection;
 	}
 
+	@Override
 	public ActionExecutor getActionExecutor() {
 		return actionExecutor;
 	}
 
+	@Override
 	public ConversionService getConversionService() {
 		return conversionService;
 	}
 
+	@Override
 	public ActionArgumentResolverCollection getActionArgumentResolverCollection() {
 		return actionArgumentResolverCollection;
 	}
 
+	@Override
 	public Predicate<String> getStaticResourcePredicate() {
 		return staticResourcePredicate;
 	}
 	
+	@Override
 	public SortedSet<ViewResolver> getViewResolverSet() {
 		return Collections.unmodifiableSortedSet(viewResolvers);
+	}
+	
+	@Override
+	public ExceptionResolver getExceptionResolver() {
+		return exceptionResolver;
 	}
 
 	// 用户覆盖项
@@ -245,6 +260,11 @@ public class JavaBasedConfig extends AbstractJavaBasedConfig {
 		if (Dependencies.checkJetx()) {
 			viewResolverSet.add(new JetxViewResolver());
 		}
+	}
+
+	@Override
+	public void configExceptionResolver(ExceptionResolver exceptionResolver) {
+		log.debug("config exception resolver");
 	}
 
 }

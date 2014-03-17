@@ -25,6 +25,7 @@ import kelly.core.action.ActionExecutor;
 import kelly.core.action.ActionFinder;
 import kelly.core.action.InvokableActionFactory;
 import kelly.core.castor.ConversionService;
+import kelly.core.exception.ExceptionResolver;
 import kelly.core.injector.Injector;
 import kelly.core.interceptor.InterceptorCollection;
 import kelly.core.json.JsonFactory;
@@ -58,12 +59,15 @@ public interface Config {
 	Predicate<String> getStaticResourcePredicate();
 	
 	SortedSet<ViewResolver> getViewResolverSet();
+	
+	ExceptionResolver getExceptionResolver();
 
 	JsonFactory getJsonFactory();
 
 	Injector getInjector();
 
 	String[] packagesToScan();
+
 	
 	// 注册回调方法
 	// ---------------------------------------------------------------
@@ -75,5 +79,7 @@ public interface Config {
 	void registerActionArgumentResolvers(ActionArgumentResolverCollection collection);
 
 	void registerViewResolvers(SortedSet<ViewResolver> viewResolverSet);
+	
+	void configExceptionResolver(ExceptionResolver exceptionResolver);
 
 }

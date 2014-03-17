@@ -35,6 +35,7 @@ import kelly.core.annotation.Controller;
 import kelly.core.castor.ConversionService;
 import kelly.core.castor.Converter;
 import kelly.core.castor.PropertyEditorFindingConversionService;
+import kelly.core.exception.ExceptionResolver;
 import kelly.core.interceptor.Interceptor;
 import kelly.core.interceptor.InterceptorCollection;
 import kelly.core.path.DefaultStaticResourcePredicate;
@@ -56,27 +57,29 @@ abstract class AbstractJavaBasedConfig implements Config {
 	
 	@SuppressWarnings("unchecked")
 	public static final Class<? extends Annotation>[] KELLY_SCAN_ANNOTATIONS = 
-			new Class[] {Component.class, Controller.class};
+					new Class[] {Component.class, Controller.class};
 
 	// ------------------------------------------------------------------------------------------------
 
-	public final ActionCollection actionCollection = new ActionCollection();
+	protected final ActionCollection actionCollection = new ActionCollection();
 	
-	public final ActionFinder actionFinder = new ActionFinder();
+	protected final ActionFinder actionFinder = new ActionFinder();
 	
-	public final InvokableActionFactory invokableActionFactory = actionCollection;
+	protected final InvokableActionFactory invokableActionFactory = actionCollection;
 	
-	public final InterceptorCollection interceptorCollection = new InterceptorCollection();
+	protected final InterceptorCollection interceptorCollection = new InterceptorCollection();
 	
-	public final ActionExecutor actionExecutor = new ActionExecutor();
+	protected final ActionExecutor actionExecutor = new ActionExecutor();
 	
-	public final ConversionService conversionService = new PropertyEditorFindingConversionService();
+	protected final ConversionService conversionService = new PropertyEditorFindingConversionService();
 	
-	public final ActionArgumentResolverCollection actionArgumentResolverCollection = new ActionArgumentResolverCollection();
+	protected final ActionArgumentResolverCollection actionArgumentResolverCollection = new ActionArgumentResolverCollection();
 	
-	public final Predicate<String> staticResourcePredicate = new DefaultStaticResourcePredicate();
+	protected final Predicate<String> staticResourcePredicate = new DefaultStaticResourcePredicate();
 	
-	public final SortedSet<ViewResolver> viewResolvers = new TreeSet<ViewResolver>(Ordered.DEFAULT_COMPARATOR);
+	protected final SortedSet<ViewResolver> viewResolvers = new TreeSet<ViewResolver>(Ordered.DEFAULT_COMPARATOR);
+	
+	protected final ExceptionResolver exceptionResolver = new ExceptionResolver();
 
 	// ------------------------------------------------------------------------------------------------
 
@@ -86,12 +89,15 @@ abstract class AbstractJavaBasedConfig implements Config {
 		interceptorCollection.setComponent(getInjector());
 		actionArgumentResolverCollection.setComponent(conversionService);
 		actionExecutor.setComponent(interceptorCollection);
+		exceptionResolver.setComponent(viewResolvers);
 
 		// 调用注册钩
 		registerConverters(conversionService);
 		registerInterceptors(interceptorCollection);
 		registerActionArgumentResolvers(actionArgumentResolverCollection);
 		registerViewResolvers(viewResolvers);
+		configExceptionResolver(exceptionResolver);
+
 	}
 	
 	// ------------------------------------------------------------------------------------------------

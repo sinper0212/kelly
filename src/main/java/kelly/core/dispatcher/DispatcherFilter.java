@@ -99,8 +99,7 @@ public class DispatcherFilter extends AbstractDispatchFilter {
 			actionResult = config.getActionExecutor().execute(invokableAction, args, request, response);
 		} catch (Throwable e) {
 			logger.error("action executor failed.", e);
-			// TODO
-			throw new RuntimeException(e);
+			config.getExceptionResolver().resolve(e, invokableAction, request, response, request.getLocale());
 		}
 		
 		if (actionResult == null) {
@@ -122,11 +121,12 @@ public class DispatcherFilter extends AbstractDispatchFilter {
 		if (view == null) {
 			throw new ViewNotFoundException("Cannot find a view to render.");
 		}
+
 		try {
 			view.render(actionResult, request, response, request.getLocale());
 		} catch (Throwable e) {
-			// TODO
-			throw new RuntimeException(e);
+			// 视图渲染失败
+			throw new ServletException(e);
 		}
 	}
 
