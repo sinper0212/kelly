@@ -49,7 +49,7 @@ import org.slf4j.LoggerFactory;
  */
 public class DispatcherFilter extends AbstractDispatchFilter {
 
-	private static final Logger logger = LoggerFactory.getLogger(DispatcherFilter.class);
+	private static final Logger LOGGER = LoggerFactory.getLogger(DispatcherFilter.class);
 	private JavaBasedConfig config = null;
 	
 	@Override
@@ -65,6 +65,7 @@ public class DispatcherFilter extends AbstractDispatchFilter {
 		}
 
 		WebContextHolder.getInstance().setConfig(config);
+		LOGGER.trace("初始化WebContextHolder实例");
 	}
 
 	@Override
@@ -73,45 +74,50 @@ public class DispatcherFilter extends AbstractDispatchFilter {
 		String uri = request.getRequestURI();
 		
 		if (isStaticUri(request)) {
-			logger.trace("'{}' is for static resource.", uri);
+			LOGGER.trace("'{}'被判定为静态资源，不做处理", uri);
 			chain.doFilter(request, response);
 			return;
 		}
 		
 		Action action = config.getActionFinder().find(request);
 		if (action == null) {
-			logger.debug("Cannot find action for uri: '{}'", uri);
+			LOGGER.trace("无法找到与'{}'相匹配的Action", uri);
 			chain.doFilter(request, response);
 			return;
 		}
+		
+		LOGGER.trace("找到与'{}'请求相匹配的Action", uri);
 		
 		setContentTypeIfNecessary(action, response);
 		setHeadersIfNecessary(action, response);
 
-		Object[] args = config.getActionArgumentResolverCollection()
-				.resolve(action.getActionArguments(), request, response);
-		
+		Object[] args = config.getActionArgumentResolverCollection().resolve(action.getActionArguments(), request, response);
+		LOGGER.trace("完成ActionArgument解析");
 		
 		InvokableAction invokableAction = config.getInvokableActionFactory().create(action);
+		LOGGER.trace("生成InvokableAction");
 		
 		ActionResult actionResult = null;
 		try {
 			actionResult = config.getActionExecutor().execute(invokableAction, args, request, response);
+			LOGGER.trace("InvokableAction执行成功");
 		} catch (Throwable e) {
-			logger.error("action executor failed.", e);
+			LOGGER.trace("InvokableAction执行失败");
+			LOGGER.info("action executor failed.", e);
 			config.getExceptionResolver().resolve(e, invokableAction, request, response, request.getLocale());
+			LOGGER.trace("异常解析结束");
+			return;
 		}
 		
 		if (actionResult == null) {
-			logger.trace("action aborted");
+			LOGGER.trace("Action终止");
 			chain.doFilter(request, response);
 			return;
 		}
 		
-		logger.trace(actionResult.toString());
-		
 		View view = null;
 		for (ViewResolver vr : config.getViewResolverSet()) {
+			LOGGER.trace("尝试使用{}的实例解析视图", vr.getClass().getName());
 			view = vr.resolve(actionResult, request.getLocale());
 			if (view != null) {
 				break;
@@ -119,13 +125,18 @@ public class DispatcherFilter extends AbstractDispatchFilter {
 		}
 		
 		if (view == null) {
+			LOGGER.trace("无法解析生成视图");
 			throw new ViewNotFoundException("Cannot find a view to render.");
 		}
+		
+		LOGGER.trace("使用{}的实例渲染视图", view.getClass().getName());
 
 		try {
 			view.render(actionResult, request, response, request.getLocale());
+			LOGGER.trace("视图渲染成功");
 		} catch (Throwable e) {
 			// 视图渲染失败
+			LOGGER.trace("视图渲染失败");
 			throw new ServletException(e);
 		}
 	}
@@ -137,6 +148,7 @@ public class DispatcherFilter extends AbstractDispatchFilter {
 	private void setContentTypeIfNecessary(Action action, HttpServletResponse response) {
 		ContentType contentType = action.getMethod().getAnnotation(ContentType.class);
 		if (contentType != null) {
+			LOGGER.trace("发现@ContentType标注，设置应答内容{}", contentType.value());
 			response.setContentType(contentType.value());
 		}
 	}
@@ -147,18 +159,21 @@ public class DispatcherFilter extends AbstractDispatchFilter {
 		
 		// 用户同时使用了@Headers和@Header
 		if (header != null && headers != null) {
-			logger.warn("@Header and @Header annotation both exists. @Header will be ignored!");
+			LOGGER.warn("@Header and @Header annotation both exists. @Header will be ignored!");
 		}
 		
 		if (headers != null) {
 			for (Header each : headers.value()) {
+				LOGGER.trace("发现@Header标注，设置应答头 {}={}", each.headerName(), each.headerValue());
 				response.setHeader(each.headerName(), each.headerValue());
 			}
 			return; // ignore @Header
 		}
 		
 		if (header != null) {
+			LOGGER.trace("发现@Header标注，设置应答头 {}={}", header.headerName(), header.headerValue());
 			response.setHeader(header.headerName(), header.headerValue());
+			return;
 		}
 	}
 

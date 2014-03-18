@@ -53,7 +53,7 @@ import org.slf4j.LoggerFactory;
  */
 abstract class AbstractJavaBasedConfig implements Config {
 
-	public static final Logger log = LoggerFactory.getLogger(AbstractJavaBasedConfig.class);
+	private static final Logger LOGGER = LoggerFactory.getLogger(AbstractJavaBasedConfig.class);
 	
 	@SuppressWarnings("unchecked")
 	public static final Class<? extends Annotation>[] KELLY_SCAN_ANNOTATIONS = 
@@ -104,52 +104,52 @@ abstract class AbstractJavaBasedConfig implements Config {
 	
 	
 	public final void log() {
-		if (log.isDebugEnabled() == false) return;
+		if (LOGGER.isDebugEnabled() == false) return;
 		
 		// action
-		log.debug(StringUtils.repeat('=', 120));
-		log.debug("Action(s) : ");
+		LOGGER.debug(StringUtils.repeat('=', 120));
+		LOGGER.debug("Action(s) : ");
 		for (Action action : actionCollection.getSortedActionList()) {
-			log.debug(action.toString());
+			LOGGER.debug(action.toString());
 		}
 		
 		// interceptor
-		log.debug(StringUtils.repeat('-', 120));
-		log.debug("Interceptor(s) : ");
+		LOGGER.debug(StringUtils.repeat('-', 120));
+		LOGGER.debug("Interceptor(s) : ");
 		for (Class<? extends Interceptor> interceptorClass : interceptorCollection.getInterceptorTypes()) {
-			log.debug(interceptorClass.getName());
+			LOGGER.debug(interceptorClass.getName());
 		}
 		
 		// converter
-		log.debug(StringUtils.repeat('-', 120));
-		log.debug("Converter(s) : ");
+		LOGGER.debug(StringUtils.repeat('-', 120));
+		LOGGER.debug("Converter(s) : ");
 		for (Entry<Class<?>, Converter<?>> entry : conversionService.getConverterPairs()) {
-			log.debug("{}  java.lang.String -> {}",entry.getValue().getClass().getName(), entry.getKey().getName());
+			LOGGER.debug("{}  java.lang.String -> {}",entry.getValue().getClass().getName(), entry.getKey().getName());
 		}
 		
 		// actionArgumentResolver
-		log.debug(StringUtils.repeat('-', 120));
-		log.debug("ActionArgumentResolver(s) : ");
+		LOGGER.debug(StringUtils.repeat('-', 120));
+		LOGGER.debug("ActionArgumentResolver(s) : ");
 		for (ActionArgumentResolver resolver : actionArgumentResolverCollection.getActionArgumentResolvers()) {
-			log.debug("{}", resolver.getClass().getName());
+			LOGGER.debug("{}", resolver.getClass().getName());
 		}
 
 		// viewResolver
-		log.debug(StringUtils.repeat('-', 120));
-		log.debug("ViewResolver(s) : ");
+		LOGGER.debug(StringUtils.repeat('-', 120));
+		LOGGER.debug("ViewResolver(s) : ");
 		for (ViewResolver resolver : viewResolvers) {
-			log.debug("{}", resolver.getClass().getName());
+			LOGGER.debug("{}", resolver.getClass().getName());
 		}
 
 		// 
-		log.debug(StringUtils.repeat('-', 120));
-		log.debug("dependency check (spring)             : {}", Dependencies.checkSpring() ? "OK" : "NG");
-		log.debug("dependency check (fastjson)           : {}", Dependencies.checkFastjson() ? "OK" : "NG");
-		log.debug("dependency check (jetbrick-template)  : {}", Dependencies.checkJetx() ? "OK" : "NG");
-		log.debug("dependency check (commons-fileupload) : {}", Dependencies.checkCommonsFileupload() ? "OK" : "NG");
+		LOGGER.debug(StringUtils.repeat('-', 120));
+		LOGGER.debug("dependency check (spring)             : {}", Dependencies.checkSpring() ? "OK" : "NG");
+		LOGGER.debug("dependency check (fastjson)           : {}", Dependencies.checkFastjson() ? "OK" : "NG");
+		LOGGER.debug("dependency check (jetbrick-template)  : {}", Dependencies.checkJetx() ? "OK" : "NG");
+		LOGGER.debug("dependency check (commons-fileupload) : {}", Dependencies.checkCommonsFileupload() ? "OK" : "NG");
 
 		// end
-		log.debug(StringUtils.repeat('=', 120));
+		LOGGER.debug(StringUtils.repeat('=', 120));
 	}
 
 }

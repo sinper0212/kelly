@@ -71,9 +71,14 @@ import kelly.core.view.ViewResolver;
 import kelly.util.ClassUtils;
 import kelly.util.scan.ClassLookupUtils;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 @SuppressWarnings({ "unchecked" })
 public class JavaBasedConfig extends AbstractJavaBasedConfig {
 
+	private static final Logger LOGGER = LoggerFactory.getLogger(JavaBasedConfig.class);
+	
 	// -----------------------------------------------------------------------------------------------
 
 	public JavaBasedConfig() {
@@ -104,7 +109,7 @@ public class JavaBasedConfig extends AbstractJavaBasedConfig {
 				if (method.getAnnotation(Mapping.class) == null) continue; // 排除没有@Mapping的方法
 				Action action = new Action(cls, method);
 				actionCollection.add(action);
-				log.trace("Action found: {}", action.getPattern());
+				LOGGER.trace("扫描到Action: pattern({})", action.getPattern());
 			}
 		}
 	}
@@ -117,7 +122,7 @@ public class JavaBasedConfig extends AbstractJavaBasedConfig {
 			boolean isImpl = ClassUtils.isAssignable(cls, Interceptor.class, true);
 			if (isImpl) {
 				interceptorCollection.add((Class<? extends Interceptor>) cls);
-				log.trace("Inteceptor found: {}", cls.getName());
+				LOGGER.trace("扫描到Inteceptor: type({})", cls.getName());
 			}
 		}
 	}
@@ -128,7 +133,7 @@ public class JavaBasedConfig extends AbstractJavaBasedConfig {
 			boolean isImpl = ClassUtils.isAssignable(cls, Converter.class, true);
 			if (isImpl) {
 				conversionService.add((Class<? extends Converter<?>>) cls);
-				log.trace("Converter found: {}", cls.getName());
+				LOGGER.trace("扫描到Converter: type({})", cls.getName());
 			}
 		}
 	}
@@ -139,7 +144,7 @@ public class JavaBasedConfig extends AbstractJavaBasedConfig {
 			boolean isImpl = ClassUtils.isAssignable(cls, ActionArgumentResolver.class, true);
 			if (isImpl) {
 				actionArgumentResolverCollection.add((Class<? extends ActionArgumentResolver>) cls);
-				log.trace("ActionArgumentResolver found: {}", cls.getName());
+				LOGGER.trace("扫描到ActionArgumentResolver: type({})", cls.getName());
 			}
 		}
 	}
@@ -216,7 +221,7 @@ public class JavaBasedConfig extends AbstractJavaBasedConfig {
 
 	@Override
 	public void registerConverters(ConversionService conversionService) {
-		log.debug("register converters");
+		LOGGER.trace("注册系统默认Converter");
 		conversionService.add(new StringConverter());
 		conversionService.add(new DateConverter());
 		conversionService.add(new BooleanConverter());
@@ -229,12 +234,12 @@ public class JavaBasedConfig extends AbstractJavaBasedConfig {
 
 	@Override
 	public void registerInterceptors(InterceptorCollection interceptorCollection) {
-		log.debug("register interceptors");
+		LOGGER.trace("注册系统默认Intceptor");
 	}
 
 	@Override
 	public void registerActionArgumentResolvers(ActionArgumentResolverCollection collection) {
-		log.debug("register action-argument resolvers");
+		LOGGER.trace("注册系统默认ActionArgumentResolver");
 		collection.add(new RequestActionArgumentResolver());
 		collection.add(new ResponseActionArgumentResolver());
 		collection.add(new SessionActionArgumentResolver());
@@ -253,7 +258,7 @@ public class JavaBasedConfig extends AbstractJavaBasedConfig {
 
 	@Override
 	public void registerViewResolvers(SortedSet<ViewResolver> viewResolverSet) {
-		log.debug("register view resolvers");
+		LOGGER.trace("注册系统默认ViewResolver");
 		viewResolverSet.add(new CommittedViewResolver());
 		viewResolverSet.add(new RedirectViewResolver());
 		viewResolverSet.add(new DownloadViewResolver());
@@ -267,7 +272,7 @@ public class JavaBasedConfig extends AbstractJavaBasedConfig {
 
 	@Override
 	public void configExceptionResolver(ExceptionResolver exceptionResolver) {
-		log.debug("config exception resolver");
+		LOGGER.trace("配置系统默认ExceptionResolver");
 	}
 
 }
