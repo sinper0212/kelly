@@ -19,6 +19,14 @@ package kelly.core.servlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletRequestWrapper;
 
+/**
+ * HttpServletRequest的装饰器
+ * 
+ * @author 应卓(yingzhor@gmail.com)
+ *
+ * @since 1.0.0
+ *
+ */
 public class HttpMethodRequestWrapper extends HttpServletRequestWrapper {
 
 	private final String method;
