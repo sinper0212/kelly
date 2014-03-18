@@ -26,7 +26,7 @@ import javax.servlet.http.HttpServletResponse;
 import kelly.core.Addable;
 import kelly.core.Aware;
 import kelly.core.castor.ConversionService;
-import kelly.core.exception.ActionNotFoundException;
+import kelly.core.exception.ArgumentResolverException;
 import kelly.util.ReflectionUtils;
 import kelly.util.Validate;
 
@@ -74,7 +74,7 @@ public final class ActionArgumentResolverCollection
 					params.add(getDefault(cls));
 					continue;
 				} else {
-					throw new ActionNotFoundException("Cannot find resolver for action-argument : " + actionArgument);
+					throw new ArgumentResolverException("Cannot find resolver for action-argument : " + actionArgument);
 				}
 			}
 			Object object = resolver.resolve(actionArgument, conversionService);
@@ -84,14 +84,15 @@ public final class ActionArgumentResolverCollection
 	}
 
 	private Object getDefault(Class<?> cls) {
-		if (cls == boolean.class) return false;
-		if (cls == byte.class) return 0;
-		if (cls == short.class) return 0;
-		if (cls == char.class) return 0;
-		if (cls == int.class) return 0;
-		if (cls == long.class) return 0L;
-		if (cls == float.class) return 0F;
-		if (cls == double.class) return 0D;
+		RuntimeException ex = new ArgumentResolverException("Cannot resolver set null to a primitive variable");
+		if (cls == boolean.class) throw ex;
+		if (cls == byte.class) throw ex;
+		if (cls == short.class) throw ex;
+		if (cls == char.class) throw ex;
+		if (cls == int.class) throw ex;
+		if (cls == long.class) throw ex;
+		if (cls == float.class)  throw ex;
+		if (cls == double.class)  throw ex;
 		return null;
 	}
 
